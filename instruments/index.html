@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A free playable browser synthesizer built with the Web Audio API." />
-  <title>Browser Tone Lab — Y2K Never Ended .Net</title>
+  <meta name="description" content="A playable browser synthesizer built with the Web Audio API." />
+  <title>Synthesizer — Y2K Never Ended .Net</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a><nav><a href="../index.html#directory">Directory</a><a href="../audio/prompt-builder.html">Prompt Builder</a></nav></header>
+  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a><nav><a href="../index.html#tools">Tools</a><a href="../audio/midi-generator.html">MIDI generator</a></nav></header>
   <main id="main" class="shell">
     <section class="page-hero">
-      <p class="breadcrumb"><a href="../index.html">Home</a> / Playable Instruments</p>
-      <p class="eyebrow">FREE WEB AUDIO INSTRUMENT</p>
-      <h1>Browser Tone Lab</h1>
-      <p>A dependency-free polyphonic synthesizer. Play with the screen keys, the computer-keyboard letters shown on each key, or a connected MIDI controller.</p>
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Audio</p>
+      <p class="eyebrow">Instrument</p>
+      <h1>Synthesizer</h1>
+      <p>Play with the on-screen keys, the computer keyboard, or a MIDI controller.</p>
     </section>
 
     <section class="workbench">
-      <div class="notice"><strong>First interaction:</strong> browsers require a click or key press before audio can begin. Keep volume moderate.</div>
+      <div class="notice">Click or press a key once to allow audio. Start at a moderate volume.</div>
       <div class="control-grid" style="margin-top:20px">
         <div class="field"><label for="waveform">Waveform</label><select id="waveform"><option>sine</option><option selected>triangle</option><option>sawtooth</option><option>square</option></select></div>
         <div class="field"><label for="octave">Octave <output id="octaveOut">4</output></label><input id="octave" type="range" min="2" max="6" value="4" /></div>
@@ -28,11 +28,11 @@
         <div class="field"><label for="cutoff">Filter <output id="cutoffOut">5600Hz</output></label><input id="cutoff" type="range" min="180" max="12000" step="20" value="5600" /></div>
       </div>
       <div id="keyboard" class="keyboard" aria-label="Playable synthesizer keyboard"></div>
-      <div class="action-row"><button id="panic">Stop all notes</button><button id="midiButton">Enable MIDI input</button></div>
+      <div class="action-row"><button id="panic">Stop notes</button><button id="midiButton">Enable MIDI input</button></div>
       <p class="feedback" id="status" aria-live="polite">Ready.</p>
     </section>
   </main>
-  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Browser Tone Lab</strong><p>All synthesis happens locally in the browser.</p></div><div><a href="../index.html">Return to directory</a></div></div></footer>
+  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Synthesizer</strong></div><div><a href="../index.html">Back to tools</a></div></div></footer>
   <script src="synth.js"></script>
 </body>
 </html>
