@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Generate a real Standard MIDI File from a chord progression in your browser." />
+  <title>Chord MIDI Generator — Y2K Never Ended .Net</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a>
+    <nav><a href="../index.html#tools">Tools</a><a href="prompt-builder.html">Audio Prompt Builder</a></nav>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="page-hero">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Sound Tools</p>
+      <p class="eyebrow">WORKING FILE GENERATOR</p>
+      <h1>Chord MIDI Generator</h1>
+      <p>Enter chord symbols, choose a rhythm, and download a real Standard MIDI File. Everything is generated in the browser.</p>
+    </section>
+
+    <section class="workbench">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="progression">Chord progression</label>
+          <input id="progression" value="C Am F G7" autocomplete="off" />
+          <small>Separate chords with spaces or commas. Supported examples: C, C#m, Bbmaj7, Dm7, G7, Fsus2, Bdim, Eaug.</small>
+        </div>
+        <div class="field">
+          <label for="tempo">Tempo</label>
+          <input id="tempo" type="number" min="30" max="260" value="100" />
+        </div>
+        <div class="field">
+          <label for="beats">Beats per chord</label>
+          <select id="beats"><option value="2">2 beats</option><option value="4" selected>4 beats</option><option value="8">8 beats</option></select>
+        </div>
+        <div class="field">
+          <label for="octave">Starting octave</label>
+          <select id="octave"><option>2</option><option selected>3</option><option>4</option><option>5</option></select>
+        </div>
+        <div class="field">
+          <label for="velocity">Velocity</label>
+          <input id="velocity" type="range" min="20" max="127" value="88" />
+        </div>
+        <div class="field">
+          <label for="pattern">Pattern</label>
+          <select id="pattern"><option value="block">Block chords</option><option value="arp">Ascending arpeggio</option><option value="broken">1–5–3–5 pattern</option></select>
+        </div>
+        <div class="field">
+          <label for="program">GM instrument</label>
+          <select id="program">
+            <option value="0">Acoustic Grand Piano</option>
+            <option value="4">Electric Piano 1</option>
+            <option value="16">Drawbar Organ</option>
+            <option value="24">Nylon Guitar</option>
+            <option value="25">Steel Guitar</option>
+            <option value="48">String Ensemble</option>
+            <option value="88">New Age Pad</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="primary" id="downloadMidi" type="button">Generate and download .mid</button>
+        <button id="preview" type="button">Show note preview</button>
+      </div>
+      <p class="feedback" id="midiStatus" aria-live="polite"></p>
+      <div class="output-box">
+        <label for="notePreview"><strong>Parsed notes</strong></label>
+        <textarea id="notePreview" readonly placeholder="Chord notes will appear here."></textarea>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Chord MIDI Generator</strong><p>Produces a Type 0 Standard MIDI File at 480 PPQ.</p></div><div><a href="../index.html">Return to tools</a></div></div></footer>
+  <script src="midi-generator.js"></script>
+</body>
+</html>
