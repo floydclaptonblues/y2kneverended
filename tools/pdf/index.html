@@ -3,22 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Development specification for a private, local-first, free PDF document desk." />
-  <title>Document Desk — Y2K Never Ended .Net</title>
+  <meta name="description" content="Merge, extract, and rotate PDF pages locally in your browser." />
+  <title>Local PDF Desk — Y2K Never Ended .Net</title>
   <link rel="stylesheet" href="../../styles.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header"><a class="brand" href="../../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a><nav><a href="../../index.html#directory">Directory</a><a href="../../methods/index.html">Methods</a></nav></header>
+  <header class="site-header">
+    <a class="brand" href="../../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a>
+    <nav><a href="../../index.html#tools">Tools</a><a href="../../methods/index.html">Methods</a></nav>
+  </header>
+
   <main id="main" class="shell">
-    <section class="page-hero"><p class="breadcrumb"><a href="../../index.html">Home</a> / Document Desk</p><p class="eyebrow">DEVELOPMENT SPECIFICATION</p><h1>Free, local-first PDF tools</h1><p>This page is not yet an editor. It publishes the requirements before implementation so the eventual tool cannot quietly drift into uploads, account walls, weak redaction, or hostage downloads.</p></section>
-    <section class="record-list">
-      <article class="record"><h2>Initial operations</h2><p>Merge, split, reorder, rotate, delete, extract, image-to-PDF, page numbering, and loss-aware compression.</p></article>
-      <article class="record"><h2>Privacy boundary</h2><p>Document bytes remain on the device for every operation supported safely in the browser. Any future server-side requirement must be disclosed before file selection.</p></article>
-      <article class="record"><h2>Redaction requirement</h2><p>True redaction must remove underlying text and image content. Drawing an opaque rectangle over extractable information will never be labeled “redaction.”</p></article>
-      <article class="record"><h2>Completion rule</h2><p>The download button remains free after the work is finished. No email address, countdown, account, or payment prompt appears between processing and export.</p></article>
+    <section class="page-hero">
+      <p class="breadcrumb"><a href="../../index.html">Home</a> / Document Tools</p>
+      <p class="eyebrow">WORKING LOCAL BROWSER TOOL</p>
+      <h1>Local PDF Desk</h1>
+      <p>Merge PDFs, extract selected pages, or rotate every page. The files are processed in your browser and are not uploaded by this page.</p>
+    </section>
+
+    <section class="workbench">
+      <div class="notice"><strong>Privacy boundary:</strong> selected document bytes remain on this device. The PDF processing library is loaded from a public CDN when the page opens.</div>
+
+      <div class="form-grid" style="margin-top:20px">
+        <div class="field full">
+          <label for="pdfFiles">Choose one or more PDF files</label>
+          <input id="pdfFiles" type="file" accept="application/pdf,.pdf" multiple />
+          <small>Merge uses every selected file in the order shown by your browser. Extract and rotate use the first selected file.</small>
+        </div>
+        <div class="field">
+          <label for="pageRange">Pages to extract</label>
+          <input id="pageRange" placeholder="1-3, 6, 9-11" />
+          <small>Page numbers start at 1.</small>
+        </div>
+        <div class="field">
+          <label for="rotation">Rotate every page</label>
+          <select id="rotation"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="primary" id="mergeButton" type="button">Merge selected PDFs</button>
+        <button id="extractButton" type="button">Extract listed pages</button>
+        <button id="rotateButton" type="button">Rotate first PDF</button>
+      </div>
+      <p class="feedback" id="pdfStatus" aria-live="polite">Choose a PDF to begin.</p>
+
+      <div class="record-list" style="margin-top:28px">
+        <article class="record"><h2>What this version does</h2><p>It creates new downloadable PDF files by merging complete documents, copying chosen pages into a new document, or applying a page rotation.</p></article>
+        <article class="record"><h2>What it does not do yet</h2><p>No compression, annotation, signatures, OCR, page-number stamping, or true content redaction. Those features are not advertised as available.</p></article>
+      </div>
     </section>
   </main>
-  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Document Desk</strong><p>Status: architecture and dependency review.</p></div><div><a href="../../index.html">Return to directory</a></div></div></footer>
+
+  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Local PDF Desk</strong><p>No account and no document upload.</p></div><div><a href="../../index.html">Return to tools</a></div></div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="pdf-tools.js"></script>
 </body>
 </html>
