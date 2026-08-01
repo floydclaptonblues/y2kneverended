@@ -2,32 +2,29 @@
 
 **The Free, Helpful Worldwide Web**
 
-A public-utility counterpart to `y2kneverended.com`: free browser tools, playable instruments, practical AI workflows, experimental software, and technical records of difficult real-world problems.
+A static collection of free browser tools.
 
-## First release
+## Working tools
 
-- `index.html` — public directory and mission statement.
-- `audio/prompt-builder.html` — local audio and MIDI prompt builder.
-- `instruments/index.html` — browser synthesizer using the Web Audio API.
-- `3d/index.html` — procedural landscape sketcher and early Bryce-Lite development prototype.
-- `field-systems/index.html` — field-system records, including the aircraft-search workflow and independent review package.
-- `lab/index.html` — reporting framework for difficult and incomplete problems.
-- `tools/pdf/index.html` — document-desk requirements and development status.
-- `methods/index.html` — permanent operating rules for published tools and investigations.
+- `audio/midi-generator.html` — creates downloadable Type 0 Standard MIDI Files from chord progressions.
+- `tools/pdf/index.html` — merges PDFs, extracts selected pages, and rotates pages locally in the browser.
+- `instruments/index.html` — playable polyphonic Web Audio synthesizer with keyboard, pointer, touch, and optional MIDI input.
+- `audio/prompt-builder.html` — creates structured audio-production and MIDI requests from user-supplied details.
+- `3d/index.html` — seeded procedural landscape generator with PNG export.
 
-## Site rules
+## Separate documentation
 
-- Free to use.
-- No account unless technically required.
-- Local-first processing whenever browser technology permits.
-- Ordinary export formats.
-- No false download buttons, artificial countdowns, or hidden subscriptions.
-- AI output, executable code, evidence, and human decisions are identified separately.
-- Errors, missing variables, and limits are documented.
+- `field-systems/index.html` — links to the aircraft-search technical record and adversarial review package.
+- `lab/index.html` — problem-record template.
+- `methods/index.html` — project rules and limitations.
 
-## Development
+These documentation pages are not presented as software tools.
 
-The site is intentionally dependency-light. Open `index.html` directly or serve the repository with any static server.
+## Technical notes
+
+The site is static and dependency-light. The PDF desk loads `pdf-lib` from jsDelivr; selected documents remain in browser memory and are not uploaded by the site code.
+
+To run locally:
 
 ```bash
 python -m http.server 8000
@@ -35,6 +32,4 @@ python -m http.server 8000
 
 Then open `http://localhost:8000`.
 
-## Domain
-
-The custom domain will be configured only after the site has enough useful material to represent the wider mission.
+The custom domain will not be configured until the working-tool set is ready for launch.
