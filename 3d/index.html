@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A free procedural landscape sketcher and early Bryce-inspired browser studio prototype." />
-  <title>Landscape Sketcher — Y2K Never Ended .Net</title>
+  <meta name="description" content="A procedural landscape generator with local PNG export." />
+  <title>Landscape Generator — Y2K Never Ended .Net</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a><nav><a href="../index.html#directory">Directory</a><a href="../methods/index.html">Methods</a></nav></header>
+  <header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a><nav><a href="../index.html#tools">Tools</a></nav></header>
   <main id="main" class="shell">
     <section class="page-hero">
-      <p class="breadcrumb"><a href="../index.html">Home</a> / 3D Workshop</p>
-      <p class="eyebrow">BRYCE-LITE DEVELOPMENT / PROTOTYPE 0.1</p>
-      <h1>Procedural Landscape Sketcher</h1>
-      <p>This first prototype is a two-dimensional scene renderer, not yet a 3D editor. It establishes the approachable controls, seeded landscapes, atmosphere, water, and local image export that the larger studio will build upon.</p>
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Image</p>
+      <p class="eyebrow">Image tool</p>
+      <h1>Landscape generator</h1>
+      <p>Adjust a seeded landscape and save the canvas as a PNG. This version is a 2D renderer, not a 3D editor.</p>
     </section>
 
     <section class="workbench two-column">
@@ -25,13 +25,13 @@
         <div class="field"><label for="water">Water level <output id="waterOut">0.62</output></label><input id="water" type="range" min="0.35" max="0.85" step="0.01" value="0.62" /></div>
         <div class="field"><label for="sunX">Sun position <output id="sunXOut">0.72</output></label><input id="sunX" type="range" min="0.08" max="0.92" step="0.01" value="0.72" /></div>
         <div class="field"><label for="haze">Haze <output id="hazeOut">0.32</output></label><input id="haze" type="range" min="0" max="0.8" step="0.01" value="0.32" /></div>
-        <div class="action-row"><button id="render" class="primary">Render scene</button><button id="randomize">Random seed</button><button id="download">Download PNG</button></div>
+        <div class="action-row"><button id="render" class="primary">Render</button><button id="randomize">Random seed</button><button id="download">Download PNG</button></div>
         <p class="feedback" id="sceneStatus" aria-live="polite"></p>
       </div>
       <div class="canvas-wrap"><canvas id="scene" width="1280" height="720">Your browser does not support canvas.</canvas></div>
     </section>
   </main>
-  <footer class="site-footer"><div class="shell footer-grid"><div><strong>3D Workshop</strong><p>Future milestones: height maps, camera controls, true 3D terrain, materials, scene JSON, and glTF export.</p></div><div><a href="../index.html">Return to directory</a></div></div></footer>
+  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Landscape generator</strong></div><div><a href="../index.html">Back to tools</a></div></div></footer>
   <script src="landscape.js"></script>
 </body>
 </html>
