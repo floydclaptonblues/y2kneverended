@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Development specification for a private, local-first, free PDF document desk." />
+  <title>Document Desk — Y2K Never Ended .Net</title>
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><a class="brand" href="../../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a><nav><a href="../../index.html#directory">Directory</a><a href="../../methods/index.html">Methods</a></nav></header>
+  <main id="main" class="shell">
+    <section class="page-hero"><p class="breadcrumb"><a href="../../index.html">Home</a> / Document Desk</p><p class="eyebrow">DEVELOPMENT SPECIFICATION</p><h1>Free, local-first PDF tools</h1><p>This page is not yet an editor. It publishes the requirements before implementation so the eventual tool cannot quietly drift into uploads, account walls, weak redaction, or hostage downloads.</p></section>
+    <section class="record-list">
+      <article class="record"><h2>Initial operations</h2><p>Merge, split, reorder, rotate, delete, extract, image-to-PDF, page numbering, and loss-aware compression.</p></article>
+      <article class="record"><h2>Privacy boundary</h2><p>Document bytes remain on the device for every operation supported safely in the browser. Any future server-side requirement must be disclosed before file selection.</p></article>
+      <article class="record"><h2>Redaction requirement</h2><p>True redaction must remove underlying text and image content. Drawing an opaque rectangle over extractable information will never be labeled “redaction.”</p></article>
+      <article class="record"><h2>Completion rule</h2><p>The download button remains free after the work is finished. No email address, countdown, account, or payment prompt appears between processing and export.</p></article>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Document Desk</strong><p>Status: architecture and dependency review.</p></div><div><a href="../../index.html">Return to directory</a></div></div></footer>
+</body>
+</html>
