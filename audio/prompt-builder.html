@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Build a precise AI prompt for audio mixing, arrangement, phase diagnosis, and MIDI generation." />
+  <title>Audio & MIDI Prompt Builder — Y2K Never Ended .Net</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">.NET</span><span>Y2K Never Ended</span></a>
+    <nav><a href="../index.html#directory">Directory</a><a href="../methods/index.html">Methods</a></nav>
+  </header>
+  <main id="main" class="shell">
+    <section class="page-hero">
+      <p class="breadcrumb"><a href="../index.html">Home</a> / Sound Lab</p>
+      <p class="eyebrow">LOCAL BROWSER UTILITY</p>
+      <h1>Audio & MIDI Prompt Builder</h1>
+      <p>Describe the actual production problem, the musical context, the technical evidence, and the output you need. The builder produces a structured prompt instead of “make this sound professional.”</p>
+    </section>
+
+    <section class="workbench">
+      <form id="promptForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="task">Task</label>
+            <select id="task">
+              <option>Mix diagnosis</option>
+              <option>Phase and masking diagnosis</option>
+              <option>Vocal placement</option>
+              <option>Arrangement review</option>
+              <option>MIDI composition</option>
+              <option>MIDI drum programming</option>
+              <option>Mastering review</option>
+              <option>Sound-design plan</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="daw">DAW or environment</label>
+            <input id="daw" placeholder="BandLab, Cakewalk, Logic, Ableton, hardware recorder…" />
+          </div>
+          <div class="field">
+            <label for="tempo">Tempo and meter</label>
+            <input id="tempo" placeholder="75 BPM, 4/4 with a 6/8-feeling overlay" />
+          </div>
+          <div class="field">
+            <label for="key">Key or tonal center</label>
+            <input id="key" placeholder="E major; bass emphasizes E and D♯" />
+          </div>
+          <div class="field full">
+            <label for="problem">Observed problem</label>
+            <textarea id="problem" required placeholder="State what you hear, where it happens, and whether the problem changes in mono, at low volume, or after muting a specific track."></textarea>
+          </div>
+          <div class="field full">
+            <label for="tracks">Relevant tracks, instruments, or source material</label>
+            <textarea id="tracks" placeholder="Tremolo Strat pitched down one semitone, fretless bass, nylon guitar, stacked vocals…"></textarea>
+          </div>
+          <div class="field">
+            <label for="evidence">Technical evidence</label>
+            <textarea id="evidence" placeholder="Spectrum ranges, phase meter behavior, LUFS, peak level, tuning, MIDI timing, screenshots…"></textarea>
+          </div>
+          <div class="field">
+            <label for="tried">What has already been tried</label>
+            <textarea id="tried" placeholder="Muted guitar, removed flanger, changed key, quantized drums…"></textarea>
+          </div>
+          <div class="field">
+            <label for="goal">Desired result</label>
+            <textarea id="goal" placeholder="Keep the tremolo texture but restore bass definition without making the mix brighter."></textarea>
+          </div>
+          <div class="field">
+            <label for="constraints">Constraints</label>
+            <textarea id="constraints" placeholder="No paid plugins; preserve live feel; do not rewrite vocal melody…"></textarea>
+          </div>
+          <div class="field full">
+            <label for="deliverable">Required response or file</label>
+            <select id="deliverable">
+              <option>Ranked diagnostic plan with tests</option>
+              <option>Exact DAW action list</option>
+              <option>MIDI specification with channels, measures, and note ranges</option>
+              <option>Valid downloadable Standard MIDI File</option>
+              <option>Mix revision checklist</option>
+              <option>Explanation plus uncertainty and missing data</option>
+            </select>
+            <small>Request a real MIDI file only from an AI environment that can generate files. Otherwise request a MIDI specification.</small>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="primary" type="submit">Generate structured prompt</button>
+          <button type="reset">Clear form</button>
+        </div>
+      </form>
+
+      <div class="output-box">
+        <label for="output"><strong>Generated prompt</strong></label>
+        <textarea id="output" readonly placeholder="Your structured prompt will appear here."></textarea>
+        <div class="action-row">
+          <button id="copyButton" type="button">Copy prompt</button>
+          <button id="downloadButton" type="button">Download .txt</button>
+        </div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="shell footer-grid"><div><strong>Sound Lab</strong><p>Structured questions produce more testable answers.</p></div><div><a href="../index.html">Return to directory</a></div></div></footer>
+  <script src="prompt-builder.js"></script>
+</body>
+</html>
