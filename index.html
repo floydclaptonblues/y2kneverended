@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MH370 modeling project — public technical interface for SATCOM, trajectory, optimization, and drift analysis.">
+  <title>MH370 Modeling System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="desktop">
+    <main class="window" aria-label="MH370 Modeling System">
+      <header class="titlebar">
+        <div class="titlebar-title"><span class="app-icon">✈</span> MH370 MODELING SYSTEM — 9M-MRO</div>
+        <div class="window-controls" aria-hidden="true">
+          <button tabindex="-1">_</button><button tabindex="-1">□</button><button tabindex="-1">×</button>
+        </div>
+      </header>
+
+      <nav class="menubar" aria-label="Application menu">
+        <button class="menu-button" data-menu="file">File</button>
+        <button class="menu-button" data-menu="model">Model</button>
+        <button class="menu-button" data-menu="observations">Observations</button>
+        <button class="menu-button" data-menu="solver">Solver</button>
+        <button class="menu-button" data-menu="drift">Drift</button>
+        <button class="menu-button" data-menu="view">View</button>
+        <button class="menu-button" data-menu="help">Help</button>
+      </nav>
+
+      <div id="menuPopup" class="menu-popup" hidden></div>
+
+      <section class="toolbar" aria-label="Project controls">
+        <button class="win-button">Open Run...</button>
+        <button class="win-button">Save State</button>
+        <span class="toolbar-separator"></span>
+        <button class="win-button" id="runButton">Run Model</button>
+        <button class="win-button" id="haltButton">Halt</button>
+        <span class="toolbar-separator"></span>
+        <label class="toolbar-label">PROFILE:</label>
+        <select class="win-select" aria-label="Model profile">
+          <option>PROFILE_INTERIOR_SMOOTH</option>
+          <option>BASELINE_TRF</option>
+          <option>TRUST_SR1</option>
+        </select>
+        <div class="prototype-flag">VISUAL PROTOTYPE / SAMPLE READOUTS</div>
+      </section>
+
+      <section class="project-strip sunken">
+        <div><span class="field-label">PROJECT</span><strong> MH370 / 9M-MRO</strong></div>
+        <div><span class="field-label">UTC EPOCH</span><strong> 2014-03-07 / 08</strong></div>
+        <div><span class="field-label">WORKSPACE</span><strong> SOUTHERN INDIAN OCEAN</strong></div>
+        <div><span class="field-label">STATE</span><span class="lamp green"></span><strong id="systemState"> READY</strong></div>
+      </section>
+
+      <div class="main-grid">
+        <aside class="left-rack">
+          <fieldset class="group-box">
+            <legend>SYSTEM STATUS</legend>
+            <div class="switchboard">
+              <div class="switch-row"><span class="lamp green"></span><span>SATCOM</span><strong>ONLINE</strong></div>
+              <div class="switch-row"><span class="lamp green"></span><span>BTO</span><strong>LOADED</strong></div>
+              <div class="switch-row"><span class="lamp green"></span><span>BFO</span><strong>LOADED</strong></div>
+              <div class="switch-row"><span class="lamp amber"></span><span>DRIFT</span><strong>STANDBY</strong></div>
+              <div class="switch-row"><span class="lamp green"></span><span>JACOBIAN</span><strong>VALID</strong></div>
+              <div class="switch-row"><span class="lamp off"></span><span>REMOTE</span><strong>OFF</strong></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group-box">
+            <legend>OBSERVATION BANK</legend>
+            <div class="meter-list">
+              <div><span>BTO records</span><output>10</output></div>
+              <div><span>Terminal events</span><output>02</output></div>
+              <div><span>Jacobian rank</span><output>74/74</output></div>
+              <div><span>Residual groups</span><output>06</output></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group-box">
+            <legend>TERMINAL EVENT ROUTING</legend>
+            <label class="check-line"><input type="radio" name="terminal" checked> Transient treatment</label>
+            <label class="check-line"><input type="radio" name="terminal"> Steady-state test</label>
+            <label class="check-line"><input type="radio" name="terminal"> Exclude terminal</label>
+            <hr class="etched">
+            <label class="check-line"><input type="checkbox" checked> 00:19:29 record</label>
+            <label class="check-line"><input type="checkbox" checked> 00:19:37 record</label>
+          </fieldset>
+
+          <fieldset class="group-box">
+            <legend>DRIFT GATES</legend>
+            <label class="check-line"><input type="checkbox" checked> Réunion ≤ 508 d</label>
+            <label class="check-line"><input type="checkbox" checked> Multi-country debris</label>
+            <label class="check-line"><input type="checkbox"> Hard drift likelihood</label>
+          </fieldset>
+        </aside>
+
+        <section class="workspace">
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="map" role="tab">Map View</button>
+            <button class="tab" data-tab="satcom" role="tab">SATCOM</button>
+            <button class="tab" data-tab="solver" role="tab">Solver</button>
+            <button class="tab" data-tab="residuals" role="tab">Residuals</button>
+            <button class="tab" data-tab="drift" role="tab">Drift</button>
+            <button class="tab" data-tab="log" role="tab">Run Log</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-map">
+            <div class="panel-caption">INDIAN OCEAN MODEL DISPLAY — PLAN VIEW</div>
+            <div class="map-screen sunken">
+              <svg viewBox="0 0 900 500" role="img" aria-label="Schematic Indian Ocean trajectory model display">
+                <defs>
+                  <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                    <path d="M 50 0 L 0 0 0 50" class="grid-line" fill="none"/>
+                  </pattern>
+                </defs>
+                <rect width="900" height="500" class="ocean"/>
+                <rect width="900" height="500" fill="url(#grid)"/>
+                <path class="land" d="M45 28 L198 36 225 78 190 121 216 164 168 187 123 172 95 130 56 112 32 70Z"/>
+                <path class="land" d="M274 0 L336 0 367 39 354 78 385 107 368 142 321 136 293 96Z"/>
+                <path class="land" d="M704 268 L779 239 855 265 891 322 869 377 809 402 745 384 712 332Z"/>
+                <path class="land island" d="M350 246 L371 228 383 257 370 304 349 325 337 297Z"/>
+                <text x="67" y="97" class="map-label">AFRICA</text>
+                <text x="287" y="61" class="map-label">INDIA</text>
+                <text x="743" y="325" class="map-label">AUSTRALIA</text>
+                <text x="310" y="214" class="map-label dim">INDIAN OCEAN</text>
+                <path class="arc arc-muted" d="M590 28 C724 123 795 241 786 471"/>
+                <path class="arc arc-bright" d="M552 23 C685 125 750 244 728 478"/>
+                <path class="track" d="M510 50 C500 119 487 170 462 220 C437 272 422 326 432 388 C440 431 422 462 402 483"/>
+                <circle cx="510" cy="50" r="5" class="fix"/><text x="518" y="47" class="fix-label">LAST PRIMARY REGION</text>
+                <circle cx="402" cy="483" r="7" class="candidate"/><text x="413" y="477" class="candidate-label">CANDIDATE</text>
+                <line x1="402" y1="483" x2="728" y2="478" class="range-line"/>
+                <text x="565" y="469" class="range-label">7TH ARC REFERENCE</text>
+                <g class="crosshair"><line x1="395" y1="483" x2="409" y2="483"/><line x1="402" y1="476" x2="402" y2="490"/></g>
+              </svg>
+              <div class="map-overlay top-left">DISPLAY 01<br>PROJECTION: SCHEMATIC<br>GRID: 5°</div>
+              <div class="map-overlay bottom-left">CURSOR: 31°23'49"S&nbsp;&nbsp;090°24'11"E</div>
+              <div class="map-overlay bottom-right">RANGE: ---- NM&nbsp;&nbsp; ZOOM 100%</div>
+            </div>
+            <div class="map-controls">
+              <button class="win-button">Zoom +</button><button class="win-button">Zoom −</button><button class="win-button">Center Candidate</button>
+              <label><input type="checkbox" checked> Arcs</label><label><input type="checkbox" checked> Track</label><label><input type="checkbox" checked> Grid</label>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-satcom">
+            <div class="panel-caption">SATCOM OBSERVATION CONSOLE</div>
+            <div class="data-table-wrap sunken">
+              <table class="data-table">
+                <thead><tr><th>UTC</th><th>CHANNEL</th><th>TYPE</th><th>OBSERVED</th><th>σ</th><th>USE</th><th>CLASS</th></tr></thead>
+                <tbody>
+                  <tr><td>18:25:27</td><td>R600</td><td>BTO</td><td>—</td><td>—</td><td>YES</td><td>OBSERVED</td></tr>
+                  <tr><td>19:41:03</td><td>R600</td><td>BTO/BFO</td><td>—</td><td>—</td><td>YES</td><td>OBSERVED</td></tr>
+                  <tr><td>00:11:00</td><td>R600</td><td>BTO/BFO</td><td>—</td><td>—</td><td>YES</td><td>OBSERVED</td></tr>
+                  <tr class="terminal-row"><td>00:19:29</td><td>R600</td><td>LOG-ON</td><td>terminal</td><td>model</td><td>TEST</td><td>OBSERVED</td></tr>
+                  <tr class="terminal-row"><td>00:19:37</td><td>R1200</td><td>LOG-ON</td><td>terminal</td><td>model</td><td>TEST</td><td>OBSERVED</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="annotation-box">Numbers intentionally withheld in this visual pass. Published values will be bound to provenance-tagged records: <b>OBSERVED</b>, <b>DERIVED</b>, <b>MODELED</b>, or <b>INFERRED</b>.</div>
+          </div>
+
+          <div class="tab-panel" id="tab-solver">
+            <div class="panel-caption">NONLINEAR OPTIMIZATION / SOLVER CONTROL</div>
+            <div class="solver-layout">
+              <fieldset class="group-box"><legend>CONTROL</legend>
+                <div class="form-grid"><label>Method</label><select class="win-select"><option>TRUST_SR1</option><option>BASELINE_TRF</option></select><label>λ</label><input class="win-input" value="0.040"><label>Max eval</label><input class="win-input" value="AUTO"><label>Tolerance</label><input class="win-input" value="1.0E-6"></div>
+                <div class="button-row"><button class="win-button">Initialize</button><button class="win-button">Solve</button><button class="win-button">Step</button></div>
+              </fieldset>
+              <fieldset class="group-box"><legend>STATUS REGISTER</legend>
+                <div class="digital-readouts"><div><span>OBJECTIVE</span><output>24.576758</output></div><div><span>KKT</span><output>3.388E-05</output></div><div><span>ITERATION</span><output>029</output></div><div><span>ACTIVE SET</span><output>NONE</output></div></div>
+              </fieldset>
+            </div>
+            <div class="terminal sunken"><span>15:17:01</span> MODEL&gt; profile PROFILE_INTERIOR_SMOOTH loaded<br><span>15:17:01</span> MODEL&gt; jacobian 83 x 74 / rank 74<br><span>15:17:02</span> MODEL&gt; derivative checkpoint PASSED<br><span>15:17:02</span> MODEL&gt; solver idle; awaiting operator command<span class="cursor">_</span></div>
+          </div>
+
+          <div class="tab-panel" id="tab-residuals">
+            <div class="panel-caption">RESIDUAL MONITOR</div>
+            <div class="chart sunken">
+              <svg viewBox="0 0 900 360" aria-label="Schematic residual plot">
+                <rect width="900" height="360" class="chart-bg"/>
+                <g class="chart-grid"><path d="M70 30V320M210 30V320M350 30V320M490 30V320M630 30V320M770 30V320M70 70H850M70 130H850M70 190H850M70 250H850M70 310H850"/></g>
+                <line x1="70" y1="190" x2="850" y2="190" class="zero-line"/>
+                <polyline points="75,144 155,203 235,169 315,197 395,182 475,194 555,187 635,192 715,188 795,191 845,190" class="plot-line"/>
+                <text x="74" y="50" class="chart-label">NORMALIZED RESIDUAL</text><text x="742" y="340" class="chart-label">EVENT INDEX →</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-drift">
+            <div class="panel-caption">OCEAN DRIFT COMPATIBILITY PANEL</div>
+            <div class="empty-instrument sunken"><div class="big-label">DRIFT SUBSYSTEM</div><div class="sevenseg">STANDBY</div><p>Trajectory-to-debris compatibility display reserved for validated drift output.</p></div>
+          </div>
+
+          <div class="tab-panel" id="tab-log">
+            <div class="panel-caption">MODEL RUN LOG</div>
+            <div class="terminal tall sunken" id="runLog">SYSTEM BOOT ........................ OK<br>SATCOM TABLE ....................... READY<br>TRAJECTORY ENGINE ................. READY<br>DRIFT ENGINE ...................... STANDBY<br>PUBLICATION PROVENANCE ............ ENABLED<br><br>C:\MH370\MODEL&gt;<span class="cursor">_</span></div>
+          </div>
+        </section>
+
+        <aside class="right-rack">
+          <fieldset class="group-box">
+            <legend>BEST STATE / SAMPLE</legend>
+            <div class="digital-readouts large">
+              <div><span>LATITUDE</span><output>31.397° S</output></div>
+              <div><span>LONGITUDE</span><output>090.403° E</output></div>
+              <div><span>ALTITUDE</span><output>—</output></div>
+              <div><span>GROUND SPD</span><output>—</output></div>
+              <div><span>HEADING</span><output>—</output></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group-box">
+            <legend>PROVENANCE BUS</legend>
+            <div class="provenance-key">
+              <div><span class="tag observed">OBS</span> Measured record</div>
+              <div><span class="tag derived">DRV</span> Deterministic transform</div>
+              <div><span class="tag modeled">MOD</span> Model output</div>
+              <div><span class="tag inferred">INF</span> Interpretation</div>
+            </div>
+          </fieldset>
+
+          <fieldset class="group-box">
+            <legend>CURVATURE BANK</legend>
+            <div class="needle-meter"><div class="scale"><span>−</span><span>0</span><span>+</span></div><div class="needle"></div></div>
+            <div class="meter-caption">WEAKEST JACOBIAN DIRECTION</div>
+            <div class="switch-row"><span class="lamp red"></span><span>GN / REF</span><strong>DISAGREE</strong></div>
+          </fieldset>
+
+          <fieldset class="group-box">
+            <legend>OPERATOR NOTES</legend>
+            <textarea class="notes" spellcheck="false">UI PASS 01
+
+Objective: boring, dense, inspectable.
+
+No narrative claims embedded in graphics.</textarea>
+          </fieldset>
+        </aside>
+      </div>
+
+      <section class="lower-console">
+        <fieldset class="group-box event-log-box">
+          <legend>EVENT / MESSAGE BUS</legend>
+          <div class="event-log sunken" id="eventLog"><span>SYS</span> Interface initialized. Sample data mode active.</div>
+        </fieldset>
+        <div class="hardware-buttons">
+          <button class="square-button"><span class="lamp green"></span>ARM</button>
+          <button class="square-button"><span class="lamp amber"></span>HOLD</button>
+          <button class="square-button danger"><span class="lamp red"></span>STOP</button>
+        </div>
+      </section>
+
+      <footer class="statusbar">
+        <div class="status-cell flex" id="statusText">Ready.</div>
+        <div class="status-cell">MODE: UI PROTOTYPE</div>
+        <div class="status-cell">SRC: LOCAL</div>
+        <div class="status-cell" id="clock">--:--:--</div>
+      </footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

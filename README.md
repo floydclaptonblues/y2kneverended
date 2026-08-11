@@ -1,35 +1,25 @@
-# Y2K Never Ended .Net
+# MH370 Modeling System
 
-**The Free, Helpful Worldwide Web**
+This repository is now dedicated exclusively to the public-facing MH370 modeling project at `mh370modeling.y2kneverended.com`.
 
-A static collection of free browser tools.
+The first implementation is deliberately a visual/interface prototype. It establishes the design language before the scientific data layer is connected:
 
-## Working tools
+- Windows 98-era technical workstation chrome
+- analog switchboard / instrumentation density
+- schematic map and plotting surfaces
+- explicit OBSERVED / DERIVED / MODELED / INFERRED provenance vocabulary
+- SATCOM, solver, residual, drift, and run-log workspaces
+- no modern dashboard/card aesthetic
 
-- `audio/midi-generator.html` — creates downloadable Type 0 Standard MIDI Files from chord progressions.
-- `tools/pdf/index.html` — merges PDFs, extracts selected pages, and rotates pages locally in the browser.
-- `instruments/index.html` — playable polyphonic Web Audio synthesizer with keyboard, pointer, touch, and optional MIDI input.
-- `audio/prompt-builder.html` — creates structured audio-production and MIDI requests from user-supplied details.
-- `3d/index.html` — seeded procedural landscape generator with PNG export.
+## Current state
 
-## Separate documentation
+The numeric displays in this first visual pass are representative interface content and must not be treated as the canonical published model dataset unless explicitly marked otherwise in the interface. Scientific records will be wired to provenance-tagged source data in later passes.
 
-- `field-systems/index.html` — links to the aircraft-search technical record and adversarial review package.
-- `lab/index.html` — problem-record template.
-- `methods/index.html` — project rules and limitations.
+## Structure
 
-These documentation pages are not presented as software tools.
+- `index.html` — application shell and instrument panels
+- `styles.css` — Win98 / engineering-workstation visual system
+- `app.js` — lightweight UI interactions
+- `CNAME` — custom domain target
 
-## Technical notes
-
-The site is static and dependency-light. The PDF desk loads `pdf-lib` from jsDelivr; selected documents remain in browser memory and are not uploaded by the site code.
-
-To run locally:
-
-```bash
-python -m http.server 8000
-```
-
-Then open `http://localhost:8000`.
-
-The custom domain will not be configured until the working-tool set is ready for launch.
+No framework or build step is required.
