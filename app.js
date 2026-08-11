@@ -9,6 +9,46 @@
   const clock = document.getElementById('clock');
   const popup = document.getElementById('menuPopup');
 
+  function installDevelopmentNotice() {
+    const notice = document.createElement('section');
+    notice.setAttribute('role', 'status');
+    notice.setAttribute('aria-label', 'MH370 Modeling System development notice');
+    notice.style.cssText = [
+      'position:fixed',
+      'right:18px',
+      'bottom:34px',
+      'z-index:10000',
+      'width:min(540px,calc(100vw - 36px))',
+      'background:#c0c0c0',
+      'color:#000',
+      'font-family:"MS Sans Serif",Tahoma,Arial,sans-serif',
+      'font-size:12px',
+      'border-top:2px solid #fff',
+      'border-left:2px solid #fff',
+      'border-right:2px solid #000',
+      'border-bottom:2px solid #000',
+      'box-shadow:2px 2px 0 #404040'
+    ].join(';');
+
+    notice.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#000080;color:#fff;font-weight:bold;padding:3px 4px;letter-spacing:.2px;">
+        <span>⚠ MH370 MODELING SYSTEM — DEVELOPMENT NOTICE</span>
+        <button type="button" aria-label="Dismiss development notice" style="width:18px;height:18px;padding:0;line-height:14px;font-weight:bold;background:#c0c0c0;color:#000;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #000;border-bottom:2px solid #000;cursor:pointer;">×</button>
+      </div>
+      <div style="padding:11px 12px 10px 12px;line-height:1.45;">
+        <div style="font-weight:bold;margin-bottom:7px;">PUBLIC FRONT-FACING UI / ACTIVE DEVELOPMENT</div>
+        <div style="margin-bottom:9px;">This interface is actively ingesting, normalizing, validating, and deriving datasets for the MH370 Modeling System. Scientific readouts may remain provisional, incomplete, or inactive until source provenance and derivation checks are complete.</div>
+        <div style="border-top:1px solid #808080;border-bottom:1px solid #fff;margin:7px 0 8px 0;"></div>
+        <div><strong>EXPECTED OPERATIONAL STATUS:</strong> OCTOBER 2026 — APPROX. TWO MONTHS</div>
+        <div style="margin-top:5px;"><strong>WEBMASTER:</strong> Ry2k</div>
+      </div>`;
+
+    notice.querySelector('button').addEventListener('click', () => notice.remove());
+    document.body.appendChild(notice);
+  }
+
+  installDevelopmentNotice();
+
   const messages = {
     map: 'Plan display selected.',
     satcom: 'SATCOM observation console selected.',
