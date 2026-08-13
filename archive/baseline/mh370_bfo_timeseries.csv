@@ -1,0 +1,5 @@
+utc,event,bfo_hz
+2014-03-07T18:25:34.461Z,18:25 log-on ACK,273
+2014-03-08T00:10:59.928Z,00:10:59 ACK,252
+2014-03-08T00:19:29.416Z,00:19:29 log-on request (R-channel),182
+2014-03-08T00:19:37.443Z,00:19:37 acknowledge (last R-burst),-2
