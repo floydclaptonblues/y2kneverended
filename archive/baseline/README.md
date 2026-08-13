@@ -18,6 +18,7 @@ The original executable environment, complete solver state, dependency lockfile,
 
 - `mh370_bfo_timeseries.csv` — selected BFO observations from the public Inmarsat log used in the historical write-up.
 - `mh370_poi_31_4S_90_4E_radius20km.geojson` — 20 km geodesic search ring around the archived POI.
+- `mh370_poi_31_4S_90_4E_radius20km.csv` — search-ring vertices in CSV form.
 - `mh370_replication_manifest.json` — metadata accompanying the historical export.
 
 ## Provenance classes used by the public interface
