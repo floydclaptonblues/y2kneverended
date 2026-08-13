@@ -1,0 +1,34 @@
+{
+  "title": "MH370 Dissertation — Multi-Domain Convergence",
+  "author": "Ryan Hall",
+  "generated_utc": "2025-08-11 22:50:44",
+  "poi_center": {
+    "lat_deg": -31.4,
+    "lon_deg": 90.4
+  },
+  "search_radius_km": 20,
+  "credible_region_95": {
+    "lat_deg": [
+      -31.7,
+      -31.1
+    ],
+    "lon_deg": [
+      89.8,
+      91.0
+    ]
+  },
+  "files": {
+    "bfo_csv": "mh370_bfo_timeseries.csv",
+    "bfo_png": "mh370_bfo_timeseries.png",
+    "ring_geojson": "mh370_poi_31_4S_90_4E_radius20km.geojson",
+    "ring_vertices_csv": "mh370_poi_31_4S_90_4E_radius20km.csv",
+    "markdown": "MH370_dissertation_draft.md",
+    "pdf": "MH370_dissertation_draft.pdf"
+  },
+  "notes": [
+    "Public-data pipeline; reproducible with fixed seeds/manifests.",
+    "BFO CSV/PNG include the last-segment real values.",
+    "GeoJSON/CSV define a 20-km geodesic ring for mission planning.",
+    "PDF is an abridged summary; use the Markdown and canvas for full text."
+  ]
+}
