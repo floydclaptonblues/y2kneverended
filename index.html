@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MH370 modeling project — public technical interface for SATCOM, trajectory, optimization, and drift analysis.">
+  <meta name="description" content="MH370 modeling project — current public technical checkpoint for SATCOM, trajectory inference, aircraft-performance qualification, and drift readiness.">
   <title>MH370 Modeling System</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="current-state.css">
   <style>
     section[aria-label="MH370 Modeling System development notice"]{display:none!important}
   </style>
@@ -33,31 +34,31 @@
       <div id="menuPopup" class="menu-popup" hidden></div>
 
       <section class="toolbar" aria-label="Project controls">
-        <button class="win-button">Open Run...</button>
+        <button class="win-button">Open Checkpoint...</button>
         <button class="win-button">Save State</button>
         <span class="toolbar-separator"></span>
-        <button class="win-button" id="runButton">Run Model (Offline)</button>
-        <button class="win-button" id="haltButton">Halt</button>
+        <button class="win-button" id="runButton">Predictive Run Locked</button>
+        <button class="win-button" id="haltButton">Hold</button>
         <span class="toolbar-separator"></span>
         <label class="toolbar-label">PROFILE:</label>
         <select class="win-select" aria-label="Model profile">
-          <option>PROFILE_INTERIOR_SMOOTH</option>
-          <option>BASELINE_TRF</option>
-          <option>TRUST_SR1</option>
+          <option>CURRENT_STATE_AUDIT</option>
+          <option>S50_EVENT_SEQUENTIAL_PLANNED</option>
+          <option>PHASE4C_NUMERICAL_ARCHIVE</option>
         </select>
-        <div class="prototype-flag">PUBLIC PROTOTYPE / ARCHIVED BASELINE AVAILABLE</div>
+        <div class="prototype-flag">CURRENT PUBLIC CHECKPOINT · 2026-09-04</div>
       </section>
 
       <section class="project-strip sunken">
         <div><span class="field-label">PROJECT</span><strong> MH370 / 9M-MRO</strong></div>
-        <div><span class="field-label">UTC EPOCH</span><strong> 2014-03-07 / 08</strong></div>
-        <div><span class="field-label">WORKSPACE</span><strong> SOUTHERN INDIAN OCEAN</strong></div>
-        <div><span class="field-label">STATE</span><span class="lamp amber"></span><strong id="systemState"> DEV / OFFLINE</strong></div>
+        <div><span class="field-label">TRAJECTORY EPOCH</span><strong> 2014-03-07 18:22:12 UTC</strong></div>
+        <div><span class="field-label">TARGET</span><strong> CLEAN POST-ANCHOR V1</strong></div>
+        <div><span class="field-label">STATE</span><span class="lamp red"></span><strong id="systemState"> PREDICTIVE LOCK</strong></div>
       </section>
 
-      <section class="group-box" aria-label="Project overview" style="margin:0 5px 6px;line-height:1.45;background:#ece9d8">
-        <strong style="display:block;margin-bottom:4px;letter-spacing:.35px">WHAT THIS IS</strong>
-        <p style="margin:0">This is an independent forensic modeling project attempting to constrain the possible location of MH370 using public SATCOM, trajectory, drift, prior-search, and bathymetric data. The current reconstruction is still being validated; the archived baseline is provided so the project's previous reasoning, observations, geometry, provenance, and replication limits can be inspected rather than hidden.</p>
+      <section class="group-box overview-box" aria-label="Project overview">
+        <strong>WHAT THIS IS NOW</strong>
+        <p>This is an independent, source-controlled MH370 inference project. The clean SATCOM target and limited-envelope numerical machinery are established, but the full event-sequential S50 posterior has not run. Predictive execution remains locked while the Boeing 777-2H6ER / Trent 892B-17 performance source and runtime qualification are completed. The archived 31.4°S, 90.4°E model remains available in a separate historical tab.</p>
       </section>
 
       <div class="main-grid">
@@ -65,154 +66,160 @@
           <fieldset class="group-box">
             <legend>SYSTEM STATUS</legend>
             <div class="switchboard">
-              <div class="switch-row"><span class="lamp green"></span><span>SATCOM</span><strong>ARCHIVE</strong></div>
-              <div class="switch-row"><span class="lamp amber"></span><span>BTO</span><strong>DEV</strong></div>
-              <div class="switch-row"><span class="lamp green"></span><span>BFO</span><strong>ARCHIVE</strong></div>
-              <div class="switch-row"><span class="lamp amber"></span><span>DRIFT</span><strong>STANDBY</strong></div>
-              <div class="switch-row"><span class="lamp amber"></span><span>JACOBIAN</span><strong>DEV CHECK</strong></div>
-              <div class="switch-row"><span class="lamp off"></span><span>REMOTE</span><strong>OFF</strong></div>
+              <div class="switch-row"><span class="lamp green"></span><span>SATCOM</span><strong>CLEAN</strong></div>
+              <div class="switch-row"><span class="lamp green"></span><span>BTO</span><strong>SRC LOCK</strong></div>
+              <div class="switch-row"><span class="lamp green"></span><span>BFO</span><strong>EVENT OWN</strong></div>
+              <div class="switch-row"><span class="lamp red"></span><span>B777 PERF</span><strong>BLOCKED</strong></div>
+              <div class="switch-row"><span class="lamp off"></span><span>S50</span><strong>NOT RUN</strong></div>
+              <div class="switch-row"><span class="lamp amber"></span><span>DRIFT</span><strong>DEFERRED</strong></div>
             </div>
           </fieldset>
 
           <fieldset class="group-box">
-            <legend>OBSERVATION BANK</legend>
+            <legend>CURRENT CHECKPOINT</legend>
             <div class="meter-list">
-              <div><span>BTO records</span><output>10</output></div>
-              <div><span>Terminal events</span><output>02</output></div>
-              <div><span>Jacobian rank</span><output>74/74</output></div>
-              <div><span>Residual groups</span><output>06</output></div>
+              <div><span>Clean evaluations</span><output>26,952</output></div>
+              <div><span>Frozen modes</span><output>128</output></div>
+              <div><span>Jacobian</span><output>83×74</output></div>
+              <div><span>Rank</span><output>74/74</output></div>
+              <div><span>Branches / cases</span><output>16 / 80</output></div>
             </div>
           </fieldset>
 
           <fieldset class="group-box">
-            <legend>TERMINAL EVENT ROUTING</legend>
-            <label class="check-line"><input type="radio" name="terminal" checked> Transient treatment</label>
-            <label class="check-line"><input type="radio" name="terminal"> Steady-state test</label>
-            <label class="check-line"><input type="radio" name="terminal"> Exclude terminal</label>
+            <legend>TERMINAL EVENT POLICY</legend>
+            <label class="check-line"><input type="checkbox" checked disabled> Fixed BTO bias: exact 17-row mean</label>
+            <label class="check-line"><input type="checkbox" checked disabled> R600 Request: −4,600 µs</label>
             <hr class="etched">
-            <label class="check-line"><input type="checkbox" checked> 00:19:29 record</label>
-            <label class="check-line"><input type="checkbox" checked> 00:19:37 record</label>
+            <label class="check-line"><input type="checkbox" checked disabled> 00:19:29 Request: 18,400 µs</label>
+            <label class="check-line"><input type="checkbox" checked disabled> Terminal BFO: transient state</label>
+            <label class="check-line"><input type="checkbox" disabled> 00:19:37 ACK BTO in route likelihood</label>
           </fieldset>
 
           <fieldset class="group-box">
-            <legend>DRIFT GATES</legend>
-            <label class="check-line"><input type="checkbox" checked> Réunion ≤ 508 d</label>
-            <label class="check-line"><input type="checkbox" checked> Multi-country debris</label>
-            <label class="check-line"><input type="checkbox"> Hard drift likelihood</label>
+            <legend>DRIFT READINESS</legend>
+            <label class="check-line"><input type="checkbox" checked disabled> Copernicus forcing: 85 files</label>
+            <label class="check-line"><input type="checkbox" checked disabled> Forcing volume: ≈8.44 GB</label>
+            <label class="check-line"><input type="checkbox" checked disabled> Réunion observed by day 508</label>
+            <label class="check-line"><input type="checkbox" disabled> Clean posterior source distribution</label>
           </fieldset>
         </aside>
 
         <section class="workspace">
           <div class="tabs" role="tablist">
-            <button class="tab active" data-tab="map" role="tab">Map View</button>
+            <button class="tab active" data-tab="map" role="tab">Current Map</button>
             <button class="tab" data-tab="satcom" role="tab">SATCOM</button>
             <button class="tab" data-tab="solver" role="tab">Solver</button>
-            <button class="tab" data-tab="residuals" role="tab">Residuals</button>
+            <button class="tab" data-tab="residuals" role="tab">Math / Gates</button>
             <button class="tab" data-tab="drift" role="tab">Drift</button>
             <button class="tab" data-tab="log" role="tab">Run Log</button>
           </div>
 
           <div class="tab-panel active" id="tab-map">
-            <div class="panel-caption">INDIAN OCEAN MODEL DISPLAY — PLAN VIEW</div>
+            <div class="panel-caption">CURRENT CONDITIONED CATALOG — NONPROBABILISTIC GEOGRAPHIC DIAGNOSTICS</div>
             <div class="map-screen sunken">
-              <svg viewBox="0 0 900 500" role="img" aria-label="Schematic Indian Ocean trajectory model display">
-                <defs>
-                  <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                    <path d="M 50 0 L 0 0 0 50" class="grid-line" fill="none"/>
-                  </pattern>
-                </defs>
-                <rect width="900" height="500" class="ocean"/>
-                <rect width="900" height="500" fill="url(#grid)"/>
-                <path class="land" d="M45 28 L198 36 225 78 190 121 216 164 168 187 123 172 95 130 56 112 32 70Z"/>
-                <path class="land" d="M274 0 L336 0 367 39 354 78 385 107 368 142 321 136 293 96Z"/>
-                <path class="land" d="M704 268 L779 239 855 265 891 322 869 377 809 402 745 384 712 332Z"/>
-                <path class="land island" d="M350 246 L371 228 383 257 370 304 349 325 337 297Z"/>
-                <text x="67" y="97" class="map-label">AFRICA</text>
-                <text x="287" y="61" class="map-label">INDIA</text>
-                <text x="743" y="325" class="map-label">AUSTRALIA</text>
-                <text x="310" y="214" class="map-label dim">INDIAN OCEAN</text>
-                <path class="arc arc-muted" d="M590 28 C724 123 795 241 786 471"/>
-                <path class="arc arc-bright" d="M552 23 C685 125 750 244 728 478"/>
-                <path class="track" d="M510 50 C500 119 487 170 462 220 C437 272 422 326 432 388 C440 431 422 462 402 483"/>
-                <circle cx="510" cy="50" r="5" class="fix"/><text x="518" y="47" class="fix-label">LAST PRIMARY REGION</text>
-                <circle cx="402" cy="483" r="7" class="candidate"/><text x="413" y="477" class="candidate-label">CANDIDATE</text>
-                <line x1="402" y1="483" x2="728" y2="478" class="range-line"/>
-                <text x="565" y="469" class="range-label">7TH ARC REFERENCE</text>
-                <g class="crosshair"><line x1="395" y1="483" x2="409" y2="483"/><line x1="402" y1="476" x2="402" y2="490"/></g>
-              </svg>
-              <div class="map-overlay top-left">DISPLAY 01<br>PROJECTION: SCHEMATIC<br>GRID: 5°</div>
-              <div class="map-overlay bottom-left">CURSOR: 31°23'49"S&nbsp;&nbsp;090°24'11"E</div>
-              <div class="map-overlay bottom-right">RANGE: ---- NM&nbsp;&nbsp; ZOOM 100%</div>
+              <svg viewBox="0 0 900 500" role="img" aria-label="Current MH370 conditioned diagnostic map"></svg>
+              <div class="map-overlay top-left">DISPLAY 01<br>CURRENT DIAGNOSTICS<br>WGS84 SCHEMATIC</div>
+              <div class="map-overlay bottom-left">NO CURRENT POI · NO POSTERIOR</div>
+              <div class="map-overlay bottom-right">WHOLE-ARC S50 SWEEP: PENDING</div>
             </div>
             <div class="map-controls">
-              <button class="win-button">Zoom +</button><button class="win-button">Zoom −</button><button class="win-button">Center Candidate</button>
-              <label><input type="checkbox" checked> Arcs</label><label><input type="checkbox" checked> Track</label><label><input type="checkbox" checked> Grid</label>
+              <button class="win-button" data-map-action="wide">Whole Arc</button>
+              <button class="win-button" data-map-action="bands">Score Bands</button>
+              <button class="win-button" data-map-action="points">Diagnostic Points</button>
+              <label><input type="checkbox" checked disabled> 7th arc</label>
+              <label><input type="checkbox" checked disabled> conditioned bands</label>
+              <label><input type="checkbox" checked disabled> provenance labels</label>
             </div>
+            <div class="annotation-box current-map-note"><b>Interpretation boundary:</b> the boxes and points are descriptive outputs from conditioned frozen-mode audits. They are not confidence regions, credible regions, endpoint uncertainty, posterior mass, or a search recommendation.</div>
           </div>
 
           <div class="tab-panel" id="tab-satcom">
-            <div class="panel-caption">SELECTED BFO OBSERVATIONS — ARCHIVE EXCERPT</div>
+            <div class="panel-caption">CLEAN SATCOM TARGET — OBSERVATION OWNERSHIP AND TERMINAL MESSAGE SEMANTICS</div>
             <div class="data-table-wrap sunken">
               <table class="data-table">
-                <thead><tr><th>UTC</th><th>EVENT</th><th>BFO</th><th>USE</th><th>CLASS</th><th>SOURCE</th></tr></thead>
+                <thead><tr><th>UTC / SCOPE</th><th>RECORD</th><th>NUMERIC POLICY</th><th>ACTIVE USE</th><th>CLASS</th></tr></thead>
                 <tbody>
-                  <tr><td>18:25:34.461</td><td>log-on ACK</td><td>273 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-                  <tr><td>00:10:59.928</td><td>ACK</td><td>252 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-                  <tr class="terminal-row"><td>00:19:29.416</td><td>log-on request (R-channel)</td><td>182 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-                  <tr class="terminal-row"><td>00:19:37.443</td><td>acknowledge (last R-burst)</td><td>−2 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
+                  <tr><td>Pre-takeoff calibration</td><td>17 BTO bias rows</td><td>−8,426,548 / 17 = −495,679.29411764705 µs</td><td>Conditioned fixed bias</td><td>ESTABLISHED</td></tr>
+                  <tr><td>16:42:32–17:07:19</td><td>Three pre-anchor BTO records; 17:07:19 BFO</td><td>No post-18:22 path ownership</td><td>Removed from clean post-anchor target</td><td>REPAIRED</td></tr>
+                  <tr><td>18:25 Request</td><td>R600 BTO</td><td>17,120 − 4,600 = 12,520 µs</td><td>Message-specific Request treatment</td><td>SOURCE-LOCKED</td></tr>
+                  <tr class="terminal-row"><td>00:19:29.416</td><td>R600 Log-on Request</td><td>23,000 − 4,600 = 18,400 µs; BFO 182 Hz</td><td>Terminal Request / transient-frequency state</td><td>ACTIVE</td></tr>
+                  <tr class="terminal-row"><td>00:19:37.443</td><td>R1200 Log-on Acknowledge</td><td>Raw BTO 49,660 µs; BFO −2 Hz</td><td>ACK BTO excluded from ordinary route likelihood</td><td>TERMINAL</td></tr>
                 </tbody>
               </table>
             </div>
-            <div class="annotation-box"><b>Archive excerpt:</b> 4 selected BFO observations are displayed here; they are not the project's entire evidentiary basis. The full reconstruction uses additional SATCOM records plus derived timing/range constraints and other model domains. Current reconstruction outputs remain unpublished until provenance and validation gates are complete.</div>
+            <div class="annotation-box"><b>Clean-target repair:</b> pre-anchor observations no longer inherit post-anchor trajectory parameters. The clean representative north-minus-south diagnostic is −179.8536203597335 log-target units, and post-anchor BTO agrees with the causal diagnostic to 2.3283064365386963×10<sup>−10</sup> log units.</div>
           </div>
 
           <div class="tab-panel" id="tab-solver">
-            <div class="panel-caption">NONLINEAR OPTIMIZATION / SOLVER CONTROL — DEVELOPMENT DIAGNOSTICS</div>
+            <div class="panel-caption">NUMERICAL CHECKPOINT AND S50 POSTERIOR ARCHITECTURE</div>
+            <div class="current-dev-note"><b>LIMITED-ENVELOPE CHECKPOINT.</b> The 16 underlying branches and 80 continuation cases validated important numerical machinery. They are not 80 independent routes and they are not the full S50 posterior search.</div>
             <div class="solver-layout">
-              <fieldset class="group-box"><legend>CONTROL</legend>
-                <div class="form-grid"><label>Method</label><select class="win-select"><option>TRUST_SR1</option><option>BASELINE_TRF</option></select><label>λ</label><input class="win-input" value="0.040"><label>Max eval</label><input class="win-input" value="AUTO"><label>Tolerance</label><input class="win-input" value="1.0E-6"></div>
-                <div class="button-row"><button class="win-button">Initialize</button><button class="win-button">Solve</button><button class="win-button">Step</button></div>
+              <fieldset class="group-box"><legend>NEXT INFERENCE ENGINE</legend>
+                <div class="form-grid">
+                  <label>Method</label><input class="win-input" value="EVENT-SEQUENTIAL SMC" readonly>
+                  <label>Assimilation</label><input class="win-input" value="BTO / BFO BY EVENT" readonly>
+                  <label>Search</label><input class="win-input" value="WHOLE ARC → ADAPTIVE REFINE" readonly>
+                  <label>Output</label><input class="win-input" value="WEIGHTED TRAJECTORY POSTERIOR" readonly>
+                </div>
+                <div class="button-row"><button class="win-button" disabled>Initialize</button><button class="win-button" disabled>Propagate</button><button class="win-button" disabled>Assimilate</button></div>
               </fieldset>
-              <fieldset class="group-box"><legend>STATUS REGISTER</legend>
-                <div class="digital-readouts"><div><span>OBJECTIVE</span><output>24.576758</output></div><div><span>KKT</span><output>3.388E-05</output></div><div><span>ITERATION</span><output>029</output></div><div><span>ACTIVE SET</span><output>NONE</output></div></div>
+              <fieldset class="group-box"><legend>NUMERICAL STATUS</legend>
+                <div class="digital-readouts">
+                  <div><span>BRANCHES</span><output>16</output></div>
+                  <div><span>CONTINUATION CASES</span><output>80</output></div>
+                  <div><span>BEST HIST. KKT</span><output>6.08E−02</output></div>
+                  <div><span>KKT ACCEPTANCE</span><output>≤1.00E−02</output></div>
+                  <div><span>CONFIRMED STATIONARY</span><output>0</output></div>
+                  <div><span>PREDICTIVE S50</span><output>NOT RUN</output></div>
+                </div>
               </fieldset>
             </div>
-            <div class="terminal sunken"><span>15:17:01</span> MODEL&gt; profile PROFILE_INTERIOR_SMOOTH loaded<br><span>15:17:01</span> MODEL&gt; jacobian 83 x 74 / rank 74<br><span>15:17:02</span> MODEL&gt; derivative checkpoint PASSED<br><span>15:17:02</span> MODEL&gt; development diagnostics only; public solver offline<span class="cursor">_</span></div>
+            <div class="terminal sunken"><span>STATE</span> CLEAN SATCOM TARGET ................ VALID<br><span>STATE</span> PRE-ANCHOR OWNERSHIP ............... REPAIRED<br><span>NUM</span>&nbsp;&nbsp;JACOBIAN ........................... 83 × 74 / RANK 74<br><span>NUM</span>&nbsp;&nbsp;DERIVATIVE CHECKS ................... PASSED<br><span>NUM</span>&nbsp;&nbsp;STATIONARITY ........................ NOT CONFIRMED<br><span>SRC</span>&nbsp;&nbsp;BOEING EXACT-ROW LOOKUP ............. PASS / NONPREDICTIVE ONLY<br><span>SRC</span>&nbsp;&nbsp;AIRCRAFT PERFORMANCE MODEL .......... BLOCKED<br><span>RUN</span>&nbsp;&nbsp;DEPENDENCY ACQUISITION V4 ........... PREPARED / OUTCOME NOT RECORDED<br><span>RUN</span>&nbsp;&nbsp;PREDICTIVE EXECUTION ................ NOT AUTHORIZED<span class="cursor">_</span></div>
           </div>
 
           <div class="tab-panel" id="tab-residuals">
-            <div class="panel-caption">RESIDUAL MONITOR</div>
-            <div class="chart sunken">
-              <svg viewBox="0 0 900 360" aria-label="Schematic residual plot">
-                <rect width="900" height="360" class="chart-bg"/>
-                <g class="chart-grid"><path d="M70 30V320M210 30V320M350 30V320M490 30V320M630 30V320M770 30V320M70 70H850M70 130H850M70 190H850M70 250H850M70 310H850"/></g>
-                <line x1="70" y1="190" x2="850" y2="190" class="zero-line"/>
-                <polyline points="75,144 155,203 235,169 315,197 395,182 475,194 555,187 635,192 715,188 795,191 845,190" class="plot-line"/>
-                <text x="74" y="50" class="chart-label">NORMALIZED RESIDUAL</text><text x="742" y="340" class="chart-label">EVENT INDEX →</text>
-              </svg>
+            <div class="panel-caption">MATHEMATICAL CONTRACTS / FAIL-CLOSED GATES</div>
+            <div class="math-grid">
+              <fieldset class="group-box math-card"><legend>BTO RESIDUAL</legend><div class="formula">r<sub>BTO,k</sub> = BTO<sub>obs,k</sub> − BTO<sub>pred,k</sub></div><p>Observed-minus-predicted sign convention. Observation ownership is event-specific.</p></fieldset>
+              <fieldset class="group-box math-card"><legend>FIXED BIAS</legend><div class="formula">b = −8,426,548 / 17<br>= −495,679.29411764705 µs</div><p>Conditioned terminal-specific calibration; not transferable to another terminal.</p></fieldset>
+              <fieldset class="group-box math-card"><legend>R600 REQUEST</legend><div class="formula">BTO<sub>corr</sub> = BTO<sub>raw</sub> − 4,600 µs</div><p>Applied once to source-authorized Log-on Request records, never to the Acknowledge.</p></fieldset>
+              <fieldset class="group-box math-card"><legend>SMC UPDATE</legend><div class="formula">w<sub>k</sub><sup>(i)</sup> ∝ w<sub>k−1</sub><sup>(i)</sup> · L<sub>BTO,k</sub> · L<sub>BFO,k</sub> · p/q</div><p>Guided proposals require the exact proposal-density correction.</p></fieldset>
+              <fieldset class="group-box math-card"><legend>PARTICLE HEALTH</legend><div class="formula">ESS = 1 / Σ<sub>i</sub>(w<sub>i</sub><sup>2</sup>)</div><p>Ordinary ESS is supplemented by unique-ancestor and genealogical-ESS gates.</p></fieldset>
+              <fieldset class="group-box math-card"><legend>JACOBIAN</legend><div class="formula">J ∈ ℝ<sup>83×74</sup>, rank(J)=74</div><p>Gradient relative check ≈5.020×10<sup>−6</sup>; Hessian-vector relative check ≈2.480×10<sup>−8</sup>.</p></fieldset>
+              <fieldset class="group-box math-card"><legend>ENDPOINT BANDS</legend><div class="formula">Δℓ ∈ {1, 5, 10}</div><p>Score-distance bands are descriptive only. They are not normalized probability regions.</p></fieldset>
+              <fieldset class="group-box math-card gate-card"><legend>ACTIVE HARD STOP</legend><div class="formula">NO_PREDICTIVE_EXECUTION_AUTHORIZED</div><p>No aircraft-performance source gate, no full S50 run.</p></fieldset>
             </div>
           </div>
 
           <div class="tab-panel" id="tab-drift">
-            <div class="panel-caption">OCEAN DRIFT COMPATIBILITY PANEL</div>
-            <div class="empty-instrument sunken"><div class="big-label">DRIFT SUBSYSTEM</div><div class="sevenseg">STANDBY</div><p>Trajectory-to-debris compatibility display reserved for validated drift output.</p></div>
+            <div class="panel-caption">OCEAN-FORCING ASSET READY / INFERENCE COUPLING DEFERRED</div>
+            <div class="drift-layout">
+              <fieldset class="group-box"><legend>FORCING ASSET</legend>
+                <div class="digital-readouts"><div><span>NETCDF FILES</span><output>85</output></div><div><span>BYTES</span><output>≈8.44×10⁹</output></div><div><span>ARCHIVE PARTS</span><output>5</output></div><div><span>RÉUNION BOUND</span><output>≤508 d</output></div></div>
+              </fieldset>
+              <fieldset class="group-box"><legend>COUPLING STATUS</legend>
+                <div class="pipeline-list"><span>Clean trajectory posterior</span><b>BLOCKED</b><span>Object-specific transport</span><b>DEFERRED</b><span>Beaching / detection model</span><b>DEFERRED</b><span>Search / bathymetry likelihood</span><b>DEFERRED</b></div>
+              </fieldset>
+            </div>
+            <div class="empty-instrument drift-screen sunken"><div class="big-label">DRIFT SUBSYSTEM</div><div class="sevenseg">DATA READY / SEED PENDING</div><p>The forcing archive is available, but no current origin ranking is authorized until a clean physical trajectory posterior exists. Historical drift shortlists remain archival.</p></div>
           </div>
 
           <div class="tab-panel" id="tab-log">
-            <div class="panel-caption">MODEL RUN LOG</div>
-            <div class="terminal tall sunken" id="runLog">SYSTEM BOOT ........................ OK<br>ARCHIVED SATCOM EXCERPT ............ READY<br>CURRENT TRAJECTORY ENGINE .......... DEVELOPMENT<br>DRIFT ENGINE ....................... STANDBY<br>PUBLICATION PROVENANCE ............. ENABLED<br><br>C:\MH370\MODEL&gt;<span class="cursor">_</span></div>
+            <div class="panel-caption">CURRENT PUBLIC CHECKPOINT LOG</div>
+            <div class="terminal tall sunken" id="runLog">CHECKPOINT DATE ...................... 2026-09-04<br>CLEAN POST-ANCHOR TARGET ............. VALID<br>PRE-ANCHOR BTO/BFO OWNERSHIP ......... REPAIRED<br>CLEAN COARSE EVALUATIONS ............. 26,952 FINITE<br>FROZEN CONDITIONED MODE CATALOG ...... 128 MODES<br>PHASE 4C NUMERICAL SHAKEOUT .......... 16 BRANCHES / 80 CASES<br>CONFIRMED STATIONARY SOLUTIONS ....... 0<br>S50 EVENT-SEQUENTIAL POSTERIOR ........ NOT RUN<br>BOEING EXACT SOURCE-ROW LOOKUP ........ PASS / NONPREDICTIVE<br>B777 / TRENT PHYSICAL SOURCE .......... BLOCKED<br>DEPENDENCY ACQUISITION V4 ............. PREPARED / RESULT PENDING<br>OCEAN FORCING ......................... 85 FILES / ≈8.44 GB<br>DRIFT COUPLING ........................ DEFERRED<br>PREDICTIVE EXECUTION .................. LOCKED<br><br>C:\MH370\CURRENT_STATE&gt;<span class="cursor">_</span></div>
           </div>
         </section>
 
         <aside class="right-rack">
           <fieldset class="group-box">
-            <legend>ARCHIVED POI / BASELINE</legend>
+            <legend>CURRENT INFERENCE STATE</legend>
             <div class="digital-readouts large">
-              <div><span>LATITUDE</span><output>31.400° S</output></div>
-              <div><span>LONGITUDE</span><output>090.400° E</output></div>
-              <div><span>ALTITUDE</span><output>—</output></div>
-              <div><span>GROUND SPD</span><output>—</output></div>
-              <div><span>HEADING</span><output>—</output></div>
+              <div><span>ENDPOINT</span><output>NONE</output></div>
+              <div><span>POSTERIOR</span><output>NOT RUN</output></div>
+              <div><span>ARC SWEEP</span><output>PENDING</output></div>
+              <div><span>PREDICTIVE EXEC</span><output>BLOCKED</output></div>
+              <div><span>ACTIVE SOURCE GATE</span><output>B777 PERF</output></div>
             </div>
           </fieldset>
 
@@ -221,26 +228,30 @@
             <div class="provenance-key">
               <div><span class="tag observed">OBS</span> Measured record</div>
               <div><span class="tag derived">DRV</span> Deterministic transform</div>
-              <div><span class="tag modeled">MOD</span> Model output</div>
+              <div><span class="tag modeled">MOD</span> Conditioned model output</div>
               <div><span class="tag inferred">INF</span> Interpretation</div>
             </div>
           </fieldset>
 
           <fieldset class="group-box">
-            <legend>CURVATURE BANK</legend>
-            <div class="needle-meter"><div class="scale"><span>−</span><span>0</span><span>+</span></div><div class="needle"></div></div>
-            <div class="meter-caption">WEAKEST JACOBIAN DIRECTION</div>
-            <div class="switch-row"><span class="lamp red"></span><span>GN / REF</span><strong>DISAGREE</strong></div>
+            <legend>NUMERICAL HEALTH</legend>
+            <div class="needle-meter"><div class="scale"><span>J</span><span>∇f</span><span>KKT</span></div><div class="needle current-needle"></div></div>
+            <div class="meter-caption">DERIVATIVES PASS / STATIONARITY OPEN</div>
+            <div class="switch-row"><span class="lamp green"></span><span>J / REF</span><strong>PASS</strong></div>
+            <div class="switch-row"><span class="lamp red"></span><span>KKT</span><strong>&gt; LIMIT</strong></div>
           </fieldset>
 
           <fieldset class="group-box">
             <legend>OPERATOR NOTES</legend>
-            <textarea class="notes" spellcheck="false">PUBLIC RESEARCH INTERFACE
+            <textarea class="notes" spellcheck="false" readonly>PUBLIC SCIENTIFIC CHECKPOINT
 
-Current reconstruction: validation in progress.
-Archived baseline: available for inspection.
+Clean SATCOM target: valid.
+Limited numerical machinery: validated.
+Full posterior: not run.
+Aircraft-performance source: blocked.
+Drift coupling: deferred.
 
-Claims should remain tied to provenance and reproducible artifacts.</textarea>
+No current endpoint is claimed.</textarea>
           </fieldset>
         </aside>
       </div>
@@ -248,26 +259,23 @@ Claims should remain tied to provenance and reproducible artifacts.</textarea>
       <section class="lower-console">
         <fieldset class="group-box event-log-box">
           <legend>EVENT / MESSAGE BUS</legend>
-          <div class="event-log sunken" id="eventLog"><span>SYS</span> Public development interface initialized. Archived baseline available.</div>
+          <div class="event-log sunken" id="eventLog"><span>SYS</span> Current public checkpoint initialized. Predictive execution remains locked.</div>
         </fieldset>
         <div class="hardware-buttons">
-          <button class="square-button"><span class="lamp green"></span>ARM</button>
+          <button class="square-button"><span class="lamp off"></span>RUN</button>
           <button class="square-button"><span class="lamp amber"></span>HOLD</button>
-          <button class="square-button danger"><span class="lamp red"></span>STOP</button>
+          <button class="square-button danger"><span class="lamp red"></span>LOCK</button>
         </div>
       </section>
 
       <footer class="statusbar">
-        <div class="status-cell flex" id="statusText">Public prototype ready. Current solver offline; archive available.</div>
-        <div class="status-cell">MODE: PUBLIC PROTOTYPE</div>
-        <div class="status-cell">SRC: ARCHIVE + DEV UI</div>
+        <div class="status-cell flex" id="statusText">Clean target valid; aircraft-performance source gate remains blocked.</div>
+        <div class="status-cell">MODE: CURRENT CHECKPOINT</div>
+        <div class="status-cell">EXEC: NO PREDICTIVE RUN</div>
         <div class="status-cell" id="clock">--:--:--</div>
       </footer>
     </main>
   </div>
   <script src="app.js"></script>
-  <script>
-    document.querySelector('section[aria-label="MH370 Modeling System development notice"]')?.remove();
-  </script>
 </body>
 </html>

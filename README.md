@@ -1,25 +1,39 @@
 # MH370 Modeling System
 
-This repository is now dedicated exclusively to the public-facing MH370 modeling project at `mh370modeling.y2kneverended.com`.
+This repository hosts the public-facing MH370 modeling project at `mh370modeling.y2kneverended.net`.
 
-The first implementation is deliberately a visual/interface prototype. It establishes the design language before the scientific data layer is connected:
+The interface retains its Windows 98-era engineering-workstation design, but its scientific content now distinguishes three things explicitly:
 
-- Windows 98-era technical workstation chrome
-- analog switchboard / instrumentation density
-- schematic map and plotting surfaces
-- explicit OBSERVED / DERIVED / MODELED / INFERRED provenance vocabulary
-- SATCOM, solver, residual, drift, and run-log workspaces
-- no modern dashboard/card aesthetic
+1. the **current clean reconstruction state**;
+2. the **active aircraft-performance and execution gates**;
+3. the **archived historical baseline**, preserved separately for provenance and comparison.
 
 ## Current state
 
-The numeric displays in this first visual pass are representative interface content and must not be treated as the canonical published model dataset unless explicitly marked otherwise in the interface. Scientific records will be wired to provenance-tagged source data in later passes.
+Top-level public status:
+
+`NO_PREDICTIVE_EXECUTION_AUTHORIZED`
+
+The clean post-anchor SATCOM target, observation-ownership repair, source-locked terminal message policy, limited-envelope Jacobian/optimizer checkpoint, conditioned mode catalog and ocean-forcing asset are represented in the main interface.
+
+The full event-sequential S50 posterior has not run. No current endpoint, credible region, drift-origin ranking or search recommendation is claimed. The blocking dependency is an occurrence-mapped Boeing 777-2H6ER / Trent 892B-17 performance source and its authorized runtime qualification.
+
+See [`current/README.md`](current/README.md) for the human-readable checkpoint and [`data/current-program-state.json`](data/current-program-state.json) for the machine-readable state.
+
+## Archived baseline
+
+The original 31.4°S, 90.4°E model remains under `archive/baseline/` and is displayed in the **Archive Baseline** tab. It is historical and superseded for current scientific inference, but retained rather than deleted.
 
 ## Structure
 
-- `index.html` — application shell and instrument panels
-- `styles.css` — Win98 / engineering-workstation visual system
-- `app.js` — lightweight UI interactions
+- `index.html` — application shell and current scientific panels
+- `styles.css` — original Win98 / engineering-workstation visual system
+- `current-state.css` — current-state additions without redesigning the base UI
+- `app.js` — current diagnostic map, tabs, archive loading and interface interactions
+- `data/current-program-state.json` — structured public checkpoint
+- `current/README.md` — current-state methodology and status
+- `archive.css` — archived-baseline presentation
+- `archive/baseline/` — preserved historical model package
 - `CNAME` — custom domain target
 
 No framework or build step is required.

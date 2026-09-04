@@ -1,0 +1,173 @@
+{
+  "schema_version": "1.0.0",
+  "checkpoint_id": "MH370_PUBLIC_CURRENT_STATE_2026-09-04_V1",
+  "updated_utc": "2026-09-04",
+  "public_status": "NO_PREDICTIVE_EXECUTION_AUTHORIZED",
+  "project": {
+    "aircraft": "Boeing 777-2H6ER",
+    "registration": "9M-MRO",
+    "msn": 28420,
+    "boeing_configuration": "WB175",
+    "engines": "2 × RB211 Trent 892B-17",
+    "trajectory_epoch_utc": "2014-03-07T18:22:12Z"
+  },
+  "clean_target": {
+    "id": "SATCOM_POST_ANCHOR_TARGET_V1",
+    "sha256": "f023fa0e0de6c5819ef95876c1277145762b7c0ac1a1006cd294b306479db8e5",
+    "status": "CLEAN_TARGET_SCIENTIFICALLY_VALID",
+    "finite_coarse_evaluations": 26952,
+    "pre_anchor_path_contributions_active": false,
+    "representative_north_minus_south_log_target_units": -179.8536203597335,
+    "maximum_absolute_post_anchor_bto_difference_log_target_units": 2.3283064365386963e-10,
+    "evidence_class": "ESTABLISHED_WORKSPACE"
+  },
+  "satcom_policy": {
+    "residual_sign": "observed_minus_predicted",
+    "fixed_bto_bias": {
+      "sample_count": 17,
+      "sum_us": -8426548,
+      "exact_mean_us": -495679.29411764705,
+      "source_display_rounded_us": -495679
+    },
+    "r600_request_timing_reference_correction_us": -4600,
+    "events": [
+      {
+        "utc": "2014-03-07T18:25:27Z",
+        "message": "R600 Log-on Request",
+        "raw_bto_us": 17120,
+        "corrected_bto_us": 12520,
+        "ordinary_route_use": true
+      },
+      {
+        "utc": "2014-03-08T00:19:29.416Z",
+        "message": "R600 Log-on Request",
+        "raw_bto_us": 23000,
+        "corrected_bto_us": 18400,
+        "bfo_hz": 182,
+        "frequency_state": "TERMINAL_TRANSIENT"
+      },
+      {
+        "utc": "2014-03-08T00:19:37.443Z",
+        "message": "R1200 Log-on Acknowledge",
+        "raw_bto_us": 49660,
+        "bfo_hz": -2,
+        "ordinary_route_bto_use": false,
+        "frequency_state": "TERMINAL_TRANSIENT"
+      }
+    ]
+  },
+  "numerical_checkpoint": {
+    "underlying_branches": 16,
+    "continuation_levels": 5,
+    "continuation_cases": 80,
+    "jacobian_rows": 83,
+    "jacobian_columns": 74,
+    "effective_rank": 74,
+    "objective_gradient_relative_check": 0.00000502,
+    "gauss_newton_hessian_vector_relative_check": 2.48e-8,
+    "historical_best_kkt": 0.0608,
+    "stationarity_acceptance_kkt": 0.01,
+    "confirmed_stationary_solutions": 0,
+    "interpretation": "LIMITED_ENVELOPE_NUMERICAL_SHAKEOUT_NOT_POSTERIOR"
+  },
+  "conditioned_catalog": {
+    "mode_count": 128,
+    "probabilistic_status": "NONPROBABILISTIC",
+    "sampled_best_score": -60.14515364751398,
+    "score_distance_bands": [
+      {
+        "within_log_units": 1,
+        "mode_count": 12,
+        "maximum_pairwise_endpoint_separation_km": 639.7923821744021,
+        "latitude_deg_north": [-38.907954539086646, -35.375673062432234],
+        "longitude_deg_east": [86.72461824009372, 92.423549009917]
+      },
+      {
+        "within_log_units": 5,
+        "mode_count": 53,
+        "maximum_pairwise_endpoint_separation_km": 1786.8810963827393,
+        "latitude_deg_north": [-41.36822343717634, -31.6529502146714],
+        "longitude_deg_east": [80.75659741028682, 96.73378700330852]
+      },
+      {
+        "within_log_units": 10,
+        "mode_count": 62,
+        "maximum_pairwise_endpoint_separation_km": 2384.472966435869,
+        "latitude_deg_north": [-41.9678004433056, -28.62785816464285],
+        "longitude_deg_east": [78.70387180146327, 99.41448031570644]
+      }
+    ],
+    "mandatory_labels": [
+      "NOT_A_CONFIDENCE_REGION",
+      "NOT_A_CREDIBLE_REGION",
+      "NOT_AN_ENDPOINT_UNCERTAINTY"
+    ]
+  },
+  "diagnostic_points": [
+    {
+      "id": "CLEAN_POST_ANCHOR_COARSE_CONSISTENCY_MAXIMUM",
+      "latitude_deg_north": -34.536712283823114,
+      "longitude_deg_east": 93.22757921497498,
+      "score": -238.54836839076023,
+      "evidence_class": "PROVISIONAL_WORKSPACE",
+      "operational_use": "PROHIBITED"
+    },
+    {
+      "id": "COMPETITIVE_240_240_MODEST_TURN_STATE_HISTORY",
+      "mode_id": "GSP_2L_M240_Dp0_H10000:MODE:298d92632484c3be8dcc",
+      "latitude_deg_north": -38.907954539086646,
+      "longitude_deg_east": 86.7411348869789,
+      "conditioned_v1_mps": 240,
+      "conditioned_v2_mps": 240,
+      "corrected_local_course_change_deg": 8.715162782179732,
+      "transition_utc": "2014-03-07T20:02:04.139282Z",
+      "score": -60.26833978640344,
+      "evidence_class": "PROVISIONAL_WORKSPACE",
+      "operational_use": "PROHIBITED"
+    }
+  ],
+  "s50_plan": {
+    "execution_status": "NOT_RUN",
+    "method": "EVENT_SEQUENTIAL_SEQUENTIAL_MONTE_CARLO",
+    "initial_search": "COARSE_WHOLE_ADMISSIBLE_SEVENTH_ARC",
+    "adaptive_tempering": true,
+    "ess_triggered_resampling": true,
+    "guided_proposal_density_correction": true,
+    "path_and_nuisance_rejuvenation": true,
+    "full_trajectory_smoothing": true,
+    "unique_ancestor_diagnostics": true,
+    "genealogical_ess": true,
+    "independent_seed_agreement": true,
+    "primary_output": "WEIGHTED_TRAJECTORY_AND_TERMINAL_STATE_POSTERIOR"
+  },
+  "aircraft_performance_gate": {
+    "aircraft_mapping": "B777-2H6ER_WB175_TRENT_892B-17",
+    "candidate_qualification_status": "TIER2_B777_OPEN_PERFORMANCE_SOURCE_CANDIDATE_QUALIFICATION_V1_BLOCKED",
+    "exact_reference_row_lookup": "GO_NONPREDICTIVE_ONLY",
+    "bounded_interpolation": "NO_GO",
+    "application_to_solver_modes": "NO_GO",
+    "aircraft_performance_model_executable": false,
+    "installed_engine_cruise_fuel_model_acquired": false,
+    "joint_domain_support": "NO_USABLE_JOINT_SUPPORT",
+    "source_request_dispatch": "NOT_SENT_REQUIRES_USER_APPROVAL",
+    "runtime_dependency_acquisition": {
+      "launcher_version": 4,
+      "status": "PREPARED_OUTCOME_NOT_RECORDED",
+      "installs_or_executes_candidates": false
+    }
+  },
+  "drift": {
+    "coupling_status": "DEFERRED_PENDING_CLEAN_TRAJECTORY_POSTERIOR",
+    "copernicus_netcdf_files": 85,
+    "approximate_total_bytes": 8440000000,
+    "archive_parts": 5,
+    "reunion_observed_presence_by_day": 508,
+    "current_origin_ranking_authorized": false
+  },
+  "public_claims": {
+    "current_endpoint": null,
+    "posterior_exists": false,
+    "search_recommendation": null,
+    "predictive_execution_authorized": false
+  }
+}

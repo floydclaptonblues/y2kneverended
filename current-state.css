@@ -1,0 +1,34 @@
+/* Current scientific-state additions. The base Win98 workstation UI remains in styles.css. */
+.overview-box{margin:0 5px 6px;line-height:1.45;background:#ece9d8}
+.overview-box>strong{display:block;margin-bottom:4px;letter-spacing:.35px}
+.overview-box p{margin:0}
+.current-map-note{font-size:11px}
+.current-dev-note{margin:0 0 8px;padding:8px;background:#fff4c2;border:1px solid #806000;font-size:11px;line-height:1.4}
+.win-button:disabled{color:#666;text-shadow:1px 1px #fff;cursor:not-allowed}
+.win-input[readonly]{background:#f2f2f2;color:#111}
+.math-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.math-card{min-height:128px;background:#d4d0c8}
+.math-card .formula{min-height:44px;display:grid;place-items:center;padding:8px;background:#071d18;color:#b8efc2;border:2px inset #aaa;font:700 13px/1.45 "Courier New",monospace;text-align:center;overflow-wrap:anywhere}
+.math-card p{margin:7px 1px 0;line-height:1.4;font-size:11px}
+.math-card.gate-card{background:#f1d0d0;border-color:#d00}
+.math-card.gate-card .formula{color:#ffb1a9;background:#1d0707;font-size:11px}
+.drift-layout{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
+.pipeline-list{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center}
+.pipeline-list span{padding:4px;background:#d8d8d8;border:1px inset #eee}
+.pipeline-list b{font:700 10px "Courier New",monospace;background:#eee;border:1px inset #ddd;padding:4px 5px;min-width:74px;text-align:center}
+.drift-screen{height:335px}
+.current-needle{left:71%;transform:rotate(31deg)}
+.map-legend-box{fill:rgba(0,0,0,.68);stroke:#61847b;stroke-width:1}
+.map-legend-text{fill:#c6ddd4;font:10px "Courier New",monospace}
+.map-band-10{fill:rgba(85,130,160,.045);stroke:#587d94;stroke-width:1;stroke-dasharray:7 5}
+.map-band-5{fill:rgba(67,160,195,.055);stroke:#54a6bd;stroke-width:1.25;stroke-dasharray:5 4}
+.map-band-1{fill:rgba(93,203,176,.075);stroke:#72d5b6;stroke-width:1.5;stroke-dasharray:3 3}
+.map-point-coarse{fill:#ffd166;stroke:#fff;stroke-width:1.2}
+.map-point-mode{fill:#f08a4b;stroke:#fff;stroke-width:1.2}
+.map-point-label{fill:#f4f0d0;font:9px "Courier New",monospace}
+.map-warning{fill:#ffef8a;font:700 12px "Courier New",monospace;letter-spacing:.3px}
+.map-arc-label{fill:#cfad62;font:10px "Courier New",monospace}
+.map-bound-label{fill:#8fd8c4;font:9px "Courier New",monospace}
+.archive-current-boundary{margin:7px 0;padding:7px;background:#fff4c2;border:1px solid #806000;line-height:1.4}
+.status-code{font-family:"Courier New",monospace;font-weight:700;overflow-wrap:anywhere}
+@media(max-width:1100px){.math-grid,.drift-layout{grid-template-columns:1fr}}
