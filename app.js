@@ -1,4 +1,7 @@
 (() => {
+  'use strict';
+
+  const CURRENT_STATE_FILE = 'data/current-program-state.json';
   const ARCHIVE_ROOT = 'archive/baseline/';
   const ARCHIVE_FILES = {
     manifest: `${ARCHIVE_ROOT}mh370_replication_manifest.json`,
@@ -16,9 +19,25 @@
   const fallbackBfo = [
     { utc: '2014-03-07T18:25:34.461Z', event: '18:25 log-on ACK', bfo_hz: 273 },
     { utc: '2014-03-08T00:10:59.928Z', event: '00:10:59 ACK', bfo_hz: 252 },
-    { utc: '2014-03-08T00:19:29.416Z', event: '00:19:29 log-on request (R-channel)', bfo_hz: 182 },
-    { utc: '2014-03-08T00:19:37.443Z', event: '00:19:37 acknowledge (last R-burst)', bfo_hz: -2 }
+    { utc: '2014-03-08T00:19:29.416Z', event: '00:19:29 log-on request', bfo_hz: 182 },
+    { utc: '2014-03-08T00:19:37.443Z', event: '00:19:37 acknowledge', bfo_hz: -2 }
   ];
+
+  const currentFallback = {
+    checkpoint_id: 'MH370_PUBLIC_CURRENT_STATE_2026-09-04_V1',
+    public_status: 'NO_PREDICTIVE_EXECUTION_AUTHORIZED',
+    updated_utc: '2026-09-04',
+    clean_target: {
+      id: 'SATCOM_POST_ANCHOR_TARGET_V1',
+      status: 'CLEAN_TARGET_SCIENTIFICALLY_VALID',
+      finite_evaluations: 26952
+    },
+    source_gate: {
+      status: 'TIER2_B777_OPEN_PERFORMANCE_SOURCE_CANDIDATE_QUALIFICATION_V1_BLOCKED',
+      exact_lookup: 'GO_NONPREDICTIVE_ONLY',
+      dependency_acquisition: 'V4_PREPARED_OUTCOME_NOT_RECORDED'
+    }
+  };
 
   function installArchiveStyles() {
     if (document.querySelector('link[data-archive-styles]')) return;
@@ -49,21 +68,21 @@
       <div class="archive-banner">
         <div>
           <strong>HISTORICAL MODEL — SUPERSEDED</strong>
-          <small>This is the project's preserved original point-of-impact baseline. It is shown for scientific history, provenance, and comparison only. It is <b>not</b> the current search recommendation.</small>
+          <small>The original point-of-impact baseline is retained for scientific history, provenance and comparison. It is not the current inference state.</small>
         </div>
         <div class="archive-chip">ARCHIVED / NOT CURRENT</div>
       </div>
+      <div class="archive-current-boundary"><b>Current/Archive boundary:</b> current solver status, source gates and mathematical contracts are shown in the main tabs. The material below is a preserved historical package and is not fed into the current clean target.</div>
       <div class="archive-grid">
         <div class="archive-stack">
           <fieldset class="group-box archive-card">
             <legend>ARCHIVED POI / GEOMETRY</legend>
-            <svg id="archiveMap" class="archive-map" viewBox="0 0 820 360" role="img" aria-label="Archived MH370 point of impact and 20 kilometer search ring"></svg>
+            <svg id="archiveMap" class="archive-map" viewBox="0 0 820 360" role="img" aria-label="Archived MH370 point and 20 kilometer ring"></svg>
             <div class="archive-note" id="archiveMapStatus">Loading preserved GeoJSON geometry…</div>
           </fieldset>
-
           <fieldset class="group-box archive-card">
             <legend>BFO OBSERVATIONS / PRESERVED SERIES</legend>
-            <svg id="archiveBfoChart" class="archive-chart" viewBox="0 0 820 300" role="img" aria-label="Selected observed MH370 BFO values from the archived baseline"></svg>
+            <svg id="archiveBfoChart" class="archive-chart" viewBox="0 0 820 300" role="img" aria-label="Selected BFO observations from the archived baseline"></svg>
             <div class="data-table-wrap sunken">
               <table class="archive-bfo-table">
                 <thead><tr><th>UTC</th><th>EVENT</th><th>BFO (Hz)</th><th>PROVENANCE</th></tr></thead>
@@ -72,7 +91,6 @@
             </div>
           </fieldset>
         </div>
-
         <div class="archive-stack">
           <fieldset class="group-box archive-card">
             <legend>MODEL RECORD</legend>
@@ -84,36 +102,33 @@
               <dt>Geometry class</dt><dd><span class="archive-tag drv">DERIVED</span></dd>
               <dt>Replication</dt><dd><span class="archive-tag partial">PARTIAL</span></dd>
             </dl>
-            <div class="archive-warning"><b>Replication boundary:</b> the original executable solver environment, dependency lockfile, complete solver state, optimizer history, dataset hashes, and intermediate numerical artifacts are not in this public pack. The archived result is therefore preserved as a historical model record, not represented as a newly reproduced solution.</div>
+            <div class="archive-warning"><b>Replication boundary:</b> the original executable environment, complete state, optimizer history, dataset hashes and intermediate numerical artifacts are not contained in this public pack. The archived result is preserved as a model record, not represented as a newly reproduced solution.</div>
           </fieldset>
-
           <fieldset class="group-box archive-card">
             <legend>PROVENANCE REGISTER</legend>
             <table class="archive-provenance">
               <thead><tr><th>ARTIFACT</th><th>CLASS</th><th>PUBLIC STATUS</th></tr></thead>
               <tbody>
                 <tr><td>Selected BFO values</td><td><span class="archive-tag obs">OBSERVED</span></td><td>Preserved CSV</td></tr>
-                <tr><td>20 km search ring</td><td><span class="archive-tag drv">DERIVED</span></td><td>Preserved GeoJSON</td></tr>
-                <tr><td>31.4° S, 90.4° E POI</td><td><span class="archive-tag inf">INFERRED</span></td><td>Historical / superseded</td></tr>
+                <tr><td>20 km ring</td><td><span class="archive-tag drv">DERIVED</span></td><td>Preserved GeoJSON</td></tr>
+                <tr><td>31.4° S, 90.4° E</td><td><span class="archive-tag inf">INFERRED</span></td><td>Historical / superseded</td></tr>
                 <tr><td>Reported 95% bounds</td><td><span class="archive-tag inf">INFERRED</span></td><td>Historical / superseded</td></tr>
                 <tr><td>Original complete execution state</td><td><span class="archive-tag partial">PARTIAL</span></td><td>Not present in public pack</td></tr>
               </tbody>
             </table>
           </fieldset>
-
           <fieldset class="group-box archive-card">
             <legend>HISTORICAL PIPELINE</legend>
             <div class="archive-pipeline">
               <span class="archive-step">SATCOM</span><span class="archive-arrow">→</span>
-              <span class="archive-step">Terminal descent</span><span class="archive-arrow">→</span>
+              <span class="archive-step">Terminal state</span><span class="archive-arrow">→</span>
               <span class="archive-step">Impact / debris</span><span class="archive-arrow">→</span>
               <span class="archive-step">Drift</span><span class="archive-arrow">→</span>
               <span class="archive-step">Search / bathymetry</span><span class="archive-arrow">→</span>
               <span class="archive-step">POI convergence</span>
             </div>
-            <p class="archive-note">Pipeline labels document the archived methodology. They do not imply that every historical computation can presently be replayed from this website.</p>
+            <p class="archive-note">These labels document the historical methodology. They do not imply that every historical computation can be replayed from this website.</p>
           </fieldset>
-
           <fieldset class="group-box archive-card">
             <legend>REPLICATION PACK</legend>
             <div class="archive-downloads">
@@ -129,169 +144,111 @@
     mapPanel.insertAdjacentElement('afterend', panel);
   }
 
-  function improvePublicState() {
-    const flag = document.querySelector('.prototype-flag');
-    if (flag) flag.textContent = 'PUBLIC PROTOTYPE / ARCHIVED BASELINE AVAILABLE';
-
-    const runButton = document.getElementById('runButton');
-    if (runButton) {
-      runButton.textContent = 'Run Model (Offline)';
-      runButton.title = 'The current scientific solver is not connected to the public UI.';
-    }
-
-    const statusCells = [...document.querySelectorAll('.statusbar .status-cell')];
-    const modeCell = statusCells.find(el => el.textContent.includes('MODE:'));
-    const srcCell = statusCells.find(el => el.textContent.includes('SRC:'));
-    if (modeCell) modeCell.textContent = 'MODE: PUBLIC PROTOTYPE';
-    if (srcCell) srcCell.textContent = 'SRC: ARCHIVE + DEV UI';
-
-    const switchRows = [...document.querySelectorAll('.switch-row')];
-    const setSwitch = (label, status) => {
-      const row = switchRows.find(el => el.textContent.includes(label));
-      if (row) {
-        const strong = row.querySelector('strong');
-        if (strong) strong.textContent = status;
-      }
-    };
-    setSwitch('SATCOM', 'ARCHIVE');
-    setSwitch('BTO', 'DEV');
-    setSwitch('BFO', 'ARCHIVE');
-    setSwitch('DRIFT', 'STANDBY');
-    setSwitch('JACOBIAN', 'DEV CHECK');
-
-    const bestLegend = [...document.querySelectorAll('.right-rack legend')].find(el => el.textContent.includes('BEST STATE'));
-    if (bestLegend) bestLegend.textContent = 'ARCHIVED POI / BASELINE';
-    const bestOutputs = document.querySelectorAll('.right-rack .digital-readouts.large output');
-    if (bestOutputs[0]) bestOutputs[0].textContent = '31.400° S';
-    if (bestOutputs[1]) bestOutputs[1].textContent = '090.400° E';
-
-    const satcomTable = document.querySelector('#tab-satcom .data-table');
-    if (satcomTable) {
-      satcomTable.innerHTML = `
-        <thead><tr><th>UTC</th><th>EVENT</th><th>BFO</th><th>USE</th><th>CLASS</th><th>SOURCE</th></tr></thead>
-        <tbody>
-          <tr><td>18:25:34.461</td><td>log-on ACK</td><td>273 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-          <tr><td>00:10:59.928</td><td>ACK</td><td>252 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-          <tr class="terminal-row"><td>00:19:29.416</td><td>log-on request (R-channel)</td><td>182 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-          <tr class="terminal-row"><td>00:19:37.443</td><td>acknowledge (last R-burst)</td><td>−2 Hz</td><td>ARCHIVE</td><td>OBSERVED</td><td>Inmarsat log</td></tr>
-        </tbody>`;
-    }
-    const satcomAnnotation = document.querySelector('#tab-satcom .annotation-box');
-    if (satcomAnnotation) satcomAnnotation.innerHTML = '<b>Archived observational layer:</b> selected BFO values from the preserved baseline pack are now displayed. Current reconstruction outputs remain unpublished until their source provenance and validation gates are complete.';
-
-    const solverLayout = document.querySelector('#tab-solver .solver-layout');
-    if (solverLayout && !document.querySelector('#tab-solver .current-dev-note')) {
-      const note = document.createElement('div');
-      note.className = 'current-dev-note';
-      note.innerHTML = '<b>CURRENT RECONSTRUCTION / DEVELOPMENT DIAGNOSTICS.</b> The controls and diagnostic readouts below represent the active development workspace; the public page does not execute the scientific solver. Use <b>Archive Baseline</b> for the inspectable historical POI package.';
-      solverLayout.insertAdjacentElement('beforebegin', note);
-    }
-  }
-
-  function installDevelopmentNotice() {
-    const notice = document.createElement('section');
-    notice.setAttribute('role', 'status');
-    notice.setAttribute('aria-label', 'MH370 Modeling System development notice');
-    notice.style.cssText = [
-      'position:fixed','right:18px','bottom:34px','z-index:10000',
-      'width:min(540px,calc(100vw - 36px))','background:#c0c0c0','color:#000',
-      'font-family:"MS Sans Serif",Tahoma,Arial,sans-serif','font-size:12px',
-      'border-top:2px solid #fff','border-left:2px solid #fff','border-right:2px solid #000','border-bottom:2px solid #000','box-shadow:2px 2px 0 #404040'
-    ].join(';');
-
-    notice.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:space-between;background:#000080;color:#fff;font-weight:bold;padding:3px 4px;letter-spacing:.2px;">
-        <span>⚠ MH370 MODELING SYSTEM — DEVELOPMENT NOTICE</span>
-        <button type="button" aria-label="Dismiss development notice" style="width:18px;height:18px;padding:0;line-height:14px;font-weight:bold;background:#c0c0c0;color:#000;border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #000;border-bottom:2px solid #000;cursor:pointer;">×</button>
-      </div>
-      <div style="padding:11px 12px 10px 12px;line-height:1.45;">
-        <div style="font-weight:bold;margin-bottom:7px;">PUBLIC FRONT-FACING UI / ACTIVE DEVELOPMENT</div>
-        <div style="margin-bottom:8px;">The current SATCOM + trajectory + drift reconstruction is still being ingested, normalized, validated, and derived. The public interface does not currently execute that scientific solver.</div>
-        <div style="margin-bottom:8px;"><strong>NOW AVAILABLE:</strong> the original POI model is preserved under <strong>Archive Baseline</strong> with observational BFO values, the 20 km GeoJSON search ring, manifest metadata, and explicit replication limits.</div>
-        <div style="border-top:1px solid #808080;border-bottom:1px solid #fff;margin:7px 0 8px 0;"></div>
-        <div><strong>EXPECTED CURRENT-MODEL OPERATIONAL STATUS:</strong> OCTOBER 2026 — APPROX. TWO MONTHS</div>
-        <div style="margin-top:5px;"><strong>WEBMASTER:</strong> Ry2k</div>
-      </div>`;
-
-    notice.querySelector('button').addEventListener('click', () => notice.remove());
-    document.body.appendChild(notice);
-  }
-
-  function installGeographicMap() {
-    const svg = document.querySelector('#tab-map .map-screen svg');
-    if (!svg) return;
-
+  function currentMapProjection() {
     const width = 900;
     const height = 500;
-    const lonMin = 84;
-    const lonMax = 118;
-    const latNorth = -18;
-    const latSouth = -42;
-    const project = (lon, lat) => [
-      ((lon - lonMin) / (lonMax - lonMin)) * width,
-      ((latNorth - lat) / (latNorth - latSouth)) * height
-    ];
-    const points = coords => coords.map(([lon, lat]) => project(lon, lat).map(v => v.toFixed(1)).join(',')).join(' ');
+    const lonMin = 76;
+    const lonMax = 104;
+    const latNorth = -27;
+    const latSouth = -43;
+    return {
+      width,
+      height,
+      lonMin,
+      lonMax,
+      latNorth,
+      latSouth,
+      point(lon, lat) {
+        return [
+          ((lon - lonMin) / (lonMax - lonMin)) * width,
+          ((latNorth - lat) / (latNorth - latSouth)) * height
+        ];
+      }
+    };
+  }
+
+  function installCurrentMap() {
+    const svg = document.querySelector('#tab-map .map-screen svg');
+    if (!svg) return;
+    const P = currentMapProjection();
+    const pointList = coords => coords.map(([lon, lat]) => P.point(lon, lat).map(v => v.toFixed(1)).join(',')).join(' ');
 
     const seventhArc = [
-      [98.6, -20.0], [97.7, -22.0], [96.7, -24.0], [95.6, -26.0],
-      [94.4, -28.0], [93.1, -30.0], [91.7, -32.0], [90.1, -34.0],
-      [88.4, -36.0], [86.5, -38.0], [84.4, -40.0]
-    ];
-    const westAustralia = [
-      [118.0, -18.0], [116.2, -18.0], [115.2, -19.2], [114.6, -20.2],
-      [114.0, -21.2], [113.7, -21.9], [113.9, -22.7], [113.5, -23.6],
-      [113.6, -24.5], [113.0, -25.4], [113.8, -26.1], [114.1, -27.0],
-      [114.3, -28.0], [114.7, -29.0], [115.0, -30.0], [115.4, -31.0],
-      [115.8, -31.9], [115.7, -32.8], [115.4, -33.5], [115.1, -34.3],
-      [116.0, -34.8], [117.0, -35.0], [118.0, -35.0]
+      [99.5, -28.6], [98.6, -29.4], [97.3, -30.6], [95.8, -32.0],
+      [94.2, -33.7], [92.4, -35.5], [90.5, -37.3], [88.5, -39.2],
+      [86.3, -41.1], [84.7, -42.5]
     ];
 
-    let grid = '';
-    for (let lon = 84; lon <= 116; lon += 4) {
-      const [x] = project(lon, latNorth);
-      grid += `<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="500" class="grid-line"/>`;
-      grid += `<text x="${(x + 4).toFixed(1)}" y="15" fill="#729889" font-size="10" font-family="monospace">${lon}°E</text>`;
+    const bands = {
+      ten: { lat: [-41.9678004433056, -28.62785816464285], lon: [78.70387180146327, 99.41448031570644] },
+      five: { lat: [-41.36822343717634, -31.6529502146714], lon: [80.75659741028682, 96.73378700330852] },
+      one: { lat: [-38.907954539086646, -35.375673062432234], lon: [86.72461824009372, 92.423549009917] }
+    };
+
+    function rectForBand(band, cssClass, label) {
+      const [x1, y1] = P.point(band.lon[0], band.lat[1]);
+      const [x2, y2] = P.point(band.lon[1], band.lat[0]);
+      const x = Math.min(x1, x2);
+      const y = Math.min(y1, y2);
+      const w = Math.abs(x2 - x1);
+      const h = Math.abs(y2 - y1);
+      return `<rect class="${cssClass}" data-layer="bands" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}"/><text class="map-bound-label" data-layer="bands" x="${(x + 7).toFixed(1)}" y="${(y + 15).toFixed(1)}">${label}</text>`;
     }
-    for (let lat = -20; lat >= -40; lat -= 4) {
-      const [, y] = project(lonMin, lat);
+
+    let grid = '';
+    for (let lon = 76; lon <= 104; lon += 4) {
+      const [x] = P.point(lon, P.latNorth);
+      grid += `<line x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="500" class="grid-line"/>`;
+      grid += `<text x="${(x + 3).toFixed(1)}" y="15" fill="#729889" font-size="10" font-family="monospace">${lon}°E</text>`;
+    }
+    for (let lat = -28; lat >= -42; lat -= 2) {
+      const [, y] = P.point(P.lonMin, lat);
       grid += `<line x1="0" y1="${y.toFixed(1)}" x2="900" y2="${y.toFixed(1)}" class="grid-line"/>`;
       grid += `<text x="5" y="${(y - 4).toFixed(1)}" fill="#729889" font-size="10" font-family="monospace">${Math.abs(lat)}°S</text>`;
     }
 
-    const [candidateX, candidateY] = project(90.4, -31.4);
-    const [perthX, perthY] = project(115.8613, -31.9523);
-    const [exmouthX, exmouthY] = project(114.127, -21.93);
-    const [arcLabelX, arcLabelY] = project(93.0, -30.2);
-    const [credibleX1, credibleY1] = project(89.8, -31.1);
-    const [credibleX2, credibleY2] = project(91.0, -31.7);
+    const coarse = P.point(93.22757921497498, -34.536712283823114);
+    const competitor = P.point(86.7411348869789, -38.907954539086646);
+    const arcLabel = P.point(94.0, -34.0);
 
     svg.setAttribute('viewBox', '0 0 900 500');
-    svg.setAttribute('aria-label', 'Southern Indian Ocean development map with ATSB seventh arc display reference and archived baseline POI');
     svg.innerHTML = `
       <rect width="900" height="500" class="ocean"/>
       <g>${grid}</g>
-      <polygon points="${points(westAustralia)}" class="land"/>
-      <text x="835" y="325" class="map-label" text-anchor="middle">WESTERN</text>
-      <text x="835" y="341" class="map-label" text-anchor="middle">AUSTRALIA</text>
-      <polyline points="${points(seventhArc)}" class="arc arc-bright" fill="none"/>
-      <text x="${arcLabelX.toFixed(1)}" y="${arcLabelY.toFixed(1)}" class="range-label" transform="rotate(-43 ${arcLabelX.toFixed(1)} ${arcLabelY.toFixed(1)})">7TH ARC — ATSB DISPLAY REFERENCE</text>
-      <rect x="${Math.min(credibleX1, credibleX2).toFixed(1)}" y="${Math.min(credibleY1, credibleY2).toFixed(1)}" width="${Math.abs(credibleX2 - credibleX1).toFixed(1)}" height="${Math.abs(credibleY2 - credibleY1).toFixed(1)}" fill="none" stroke="#65b4ff" stroke-width="1.5" stroke-dasharray="5 4"/>
-      <circle cx="${perthX.toFixed(1)}" cy="${perthY.toFixed(1)}" r="3.5" fill="#d9d9d9" stroke="#111"/>
-      <text x="${(perthX - 7).toFixed(1)}" y="${(perthY - 7).toFixed(1)}" class="fix-label" text-anchor="end">PERTH</text>
-      <circle cx="${exmouthX.toFixed(1)}" cy="${exmouthY.toFixed(1)}" r="3.5" fill="#d9d9d9" stroke="#111"/>
-      <text x="${(exmouthX - 7).toFixed(1)}" y="${(exmouthY - 7).toFixed(1)}" class="fix-label" text-anchor="end">EXMOUTH</text>
-      <circle cx="${candidateX.toFixed(1)}" cy="${candidateY.toFixed(1)}" r="7" class="candidate"/>
-      <g class="crosshair"><line x1="${(candidateX - 10).toFixed(1)}" y1="${candidateY.toFixed(1)}" x2="${(candidateX + 10).toFixed(1)}" y2="${candidateY.toFixed(1)}"/><line x1="${candidateX.toFixed(1)}" y1="${(candidateY - 10).toFixed(1)}" x2="${candidateX.toFixed(1)}" y2="${(candidateY + 10).toFixed(1)}"/></g>
-      <text x="${(candidateX + 12).toFixed(1)}" y="${(candidateY - 7).toFixed(1)}" class="candidate-label">ARCHIVED POI</text>
-      <text x="450" y="245" class="map-label dim" text-anchor="middle">SOUTHERN INDIAN OCEAN</text>`;
+      ${rectForBand(bands.ten, 'map-band-10', 'WITHIN 10 LOG UNITS · 62 MODES')}
+      ${rectForBand(bands.five, 'map-band-5', 'WITHIN 5 LOG UNITS · 53 MODES')}
+      ${rectForBand(bands.one, 'map-band-1', 'WITHIN 1 LOG UNIT · 12 MODES')}
+      <polyline points="${pointList(seventhArc)}" class="arc arc-bright" data-layer="arc" fill="none"/>
+      <text x="${arcLabel[0].toFixed(1)}" y="${arcLabel[1].toFixed(1)}" class="map-arc-label" data-layer="arc" transform="rotate(-42 ${arcLabel[0].toFixed(1)} ${arcLabel[1].toFixed(1)})">7TH ARC — DISPLAY REFERENCE</text>
+      <g data-layer="points">
+        <circle cx="${coarse[0].toFixed(1)}" cy="${coarse[1].toFixed(1)}" r="7" class="map-point-coarse"/>
+        <line x1="${(coarse[0]-10).toFixed(1)}" y1="${coarse[1].toFixed(1)}" x2="${(coarse[0]+10).toFixed(1)}" y2="${coarse[1].toFixed(1)}" class="crosshair"/>
+        <line x1="${coarse[0].toFixed(1)}" y1="${(coarse[1]-10).toFixed(1)}" x2="${coarse[0].toFixed(1)}" y2="${(coarse[1]+10).toFixed(1)}" class="crosshair"/>
+        <text x="${(coarse[0]+13).toFixed(1)}" y="${(coarse[1]-7).toFixed(1)}" class="map-point-label">CLEAN COARSE CONSISTENCY MAXIMUM</text>
+        <text x="${(coarse[0]+13).toFixed(1)}" y="${(coarse[1]+7).toFixed(1)}" class="map-point-label">34.5367°S / 93.2276°E · PROVISIONAL</text>
+        <circle cx="${competitor[0].toFixed(1)}" cy="${competitor[1].toFixed(1)}" r="6" class="map-point-mode"/>
+        <text x="${(competitor[0]+12).toFixed(1)}" y="${(competitor[1]-5).toFixed(1)}" class="map-point-label">CONDITIONED 240/240 COMPETITOR</text>
+        <text x="${(competitor[0]+12).toFixed(1)}" y="${(competitor[1]+9).toFixed(1)}" class="map-point-label">38.9080°S / 86.7411°E · DESCRIPTIVE</text>
+      </g>
+      <rect x="610" y="28" width="262" height="93" class="map-legend-box"/>
+      <text x="624" y="49" class="map-warning">NO POSTERIOR / NO CURRENT POI</text>
+      <text x="624" y="69" class="map-legend-text">Score-distance rectangles are not probability.</text>
+      <text x="624" y="85" class="map-legend-text">Points are audit outputs, not recommendations.</text>
+      <text x="624" y="101" class="map-legend-text">Whole-arc S50 exploration remains pending.</text>`;
+  }
 
-    const topLeft = document.querySelector('#tab-map .map-overlay.top-left');
-    const bottomLeft = document.querySelector('#tab-map .map-overlay.bottom-left');
-    const bottomRight = document.querySelector('#tab-map .map-overlay.bottom-right');
-    if (topLeft) topLeft.innerHTML = 'DISPLAY 01<br>WGS84 EQUIRECTANGULAR<br>84–118°E / 18–42°S<br>ARC: ATSB DISPLAY REF';
-    if (bottomLeft) bottomLeft.innerHTML = 'ARCHIVED POI: 31°24\'00\"S&nbsp;&nbsp;090°24\'00\"E';
-    if (bottomRight) bottomRight.innerHTML = 'CURRENT MODEL: DEVELOPMENT&nbsp;&nbsp; ZOOM 100%';
+  function setMapLayer(layer) {
+    const svg = document.querySelector('#tab-map .map-screen svg');
+    if (!svg) return;
+    const all = ['arc', 'bands', 'points'];
+    all.forEach(name => {
+      svg.querySelectorAll(`[data-layer="${name}"]`).forEach(el => {
+        el.style.opacity = layer === 'wide' || layer === name ? '1' : '0.16';
+      });
+    });
+    if (layer === 'wide') {
+      all.forEach(name => svg.querySelectorAll(`[data-layer="${name}"]`).forEach(el => { el.style.opacity = '1'; }));
+    }
   }
 
   function parseCsv(text) {
@@ -301,14 +258,14 @@
       const values = [];
       let cell = '';
       let quoted = false;
-      for (let i = 0; i < line.length; i++) {
+      for (let i = 0; i < line.length; i += 1) {
         const ch = line[i];
         if (ch === '"') quoted = !quoted;
         else if (ch === ',' && !quoted) { values.push(cell); cell = ''; }
         else cell += ch;
       }
       values.push(cell);
-      return Object.fromEntries(headers.map((h, i) => [h, values[i]]));
+      return Object.fromEntries(headers.map((header, index) => [header, values[index]]));
     });
   }
 
@@ -316,9 +273,9 @@
     const coords = [];
     const dLat = radiusKm / 111.32;
     const dLon = radiusKm / (111.32 * Math.cos(centerLat * Math.PI / 180));
-    for (let i = 0; i <= 120; i++) {
-      const a = (i / 120) * Math.PI * 2;
-      coords.push([centerLon + Math.sin(a) * dLon, centerLat + Math.cos(a) * dLat]);
+    for (let i = 0; i <= 120; i += 1) {
+      const angle = (i / 120) * Math.PI * 2;
+      coords.push([centerLon + Math.sin(angle) * dLon, centerLat + Math.cos(angle) * dLat]);
     }
     return coords;
   }
@@ -340,7 +297,7 @@
 
     const center = manifest.poi_center || fallbackManifest.poi_center;
     const bounds = manifest.credible_region_95 || fallbackManifest.credible_region_95;
-    let ring = geojson?.features?.[0]?.geometry?.coordinates?.[0];
+    let ring = geojson && geojson.features && geojson.features[0] && geojson.features[0].geometry && geojson.features[0].geometry.coordinates && geojson.features[0].geometry.coordinates[0];
     if (!ring) ring = fallbackRing(center.lat_deg, center.lon_deg, manifest.search_radius_km || 20);
 
     let grid = '';
@@ -374,12 +331,7 @@
     const svg = document.getElementById('archiveBfoChart');
     const body = document.getElementById('archiveBfoRows');
     if (!svg || !body) return;
-    const data = rows.map(row => ({
-      utc: row.utc,
-      event: row.event,
-      bfo_hz: Number(row.bfo_hz)
-    })).filter(row => row.utc && Number.isFinite(row.bfo_hz));
-
+    const data = rows.map(row => ({ utc: row.utc, event: row.event, bfo_hz: Number(row.bfo_hz) })).filter(row => row.utc && Number.isFinite(row.bfo_hz));
     body.innerHTML = data.map(row => `<tr><td>${row.utc.replace('2014-03-','').replace('T',' ').replace('Z','')}</td><td>${row.event}</td><td>${row.bfo_hz}</td><td><span class="archive-tag obs">OBSERVED</span></td></tr>`).join('');
 
     const width = 820;
@@ -388,39 +340,30 @@
     const right = 28;
     const top = 26;
     const bottom = 46;
-    const times = data.map(d => Date.parse(d.utc));
+    const times = data.map(item => Date.parse(item.utc));
     const t0 = Math.min(...times);
     const t1 = Math.max(...times);
     const yMin = -10;
     const yMax = 290;
-    const x = t => left + ((t - t0) / Math.max(1, t1 - t0)) * (width - left - right);
-    const y = v => top + ((yMax - v) / (yMax - yMin)) * (height - top - bottom);
+    const x = time => left + ((time - t0) / Math.max(1, t1 - t0)) * (width - left - right);
+    const y = value => top + ((yMax - value) / (yMax - yMin)) * (height - top - bottom);
 
     let grid = '';
-    [0,50,100,150,200,250].forEach(v => {
-      const yy = y(v);
-      grid += `<line x1="${left}" y1="${yy}" x2="${width-right}" y2="${yy}" class="grid"/><text x="8" y="${yy+4}" class="label">${v}</text>`;
+    [0,50,100,150,200,250].forEach(value => {
+      const yy = y(value);
+      grid += `<line x1="${left}" y1="${yy}" x2="${width-right}" y2="${yy}" class="grid"/><text x="8" y="${yy+4}" class="label">${value}</text>`;
     });
-    const pts = data.map((d,i) => `${x(times[i]).toFixed(1)},${y(d.bfo_hz).toFixed(1)}`).join(' ');
-    const pointMarkup = data.map((d,i) => {
-      const xx = x(times[i]);
-      const yy = y(d.bfo_hz);
-      const anchor = i >= data.length - 2 ? 'end' : 'start';
-      const dx = i >= data.length - 2 ? -7 : 7;
-      const labelY = i === data.length - 1 ? yy - 8 : yy - 10;
-      const shortTime = d.utc.slice(11,19);
-      return `<circle cx="${xx}" cy="${yy}" r="5" class="point"/><text x="${xx+dx}" y="${labelY}" text-anchor="${anchor}" class="value">${shortTime} / ${d.bfo_hz} Hz</text>`;
+    const pts = data.map((item,index) => `${x(times[index]).toFixed(1)},${y(item.bfo_hz).toFixed(1)}`).join(' ');
+    const pointMarkup = data.map((item,index) => {
+      const xx = x(times[index]);
+      const yy = y(item.bfo_hz);
+      const anchor = index >= data.length - 2 ? 'end' : 'start';
+      const dx = index >= data.length - 2 ? -7 : 7;
+      const labelY = index === data.length - 1 ? yy - 8 : yy - 10;
+      return `<circle cx="${xx}" cy="${yy}" r="5" class="point"/><text x="${xx+dx}" y="${labelY}" text-anchor="${anchor}" class="value">${item.utc.slice(11,19)} / ${item.bfo_hz} Hz</text>`;
     }).join('');
 
-    svg.innerHTML = `
-      <rect width="${width}" height="${height}" fill="#071d22"/>
-      ${grid}
-      <line x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}" class="axis"/>
-      <line x1="${left}" y1="${height-bottom}" x2="${width-right}" y2="${height-bottom}" class="axis"/>
-      <polyline points="${pts}" class="series"/>
-      ${pointMarkup}
-      <text x="12" y="18" class="label">BFO (Hz)</text>
-      <text x="${width-168}" y="${height-12}" class="label">UTC / selected observations</text>`;
+    svg.innerHTML = `<rect width="${width}" height="${height}" fill="#071d22"/>${grid}<line x1="${left}" y1="${top}" x2="${left}" y2="${height-bottom}" class="axis"/><line x1="${left}" y1="${height-bottom}" x2="${width-right}" y2="${height-bottom}" class="axis"/><polyline points="${pts}" class="series"/>${pointMarkup}<text x="12" y="18" class="label">BFO (Hz)</text><text x="${width-168}" y="${height-12}" class="label">UTC / selected observations</text>`;
   }
 
   async function loadArchiveData() {
@@ -429,28 +372,28 @@
     let manifest = fallbackManifest;
     let rows = fallbackBfo;
     let geojson = null;
-    let loaded = [];
+    const loaded = [];
 
     try {
       const response = await fetch(ARCHIVE_FILES.manifest, { cache: 'no-store' });
       if (!response.ok) throw new Error(`manifest ${response.status}`);
       manifest = await response.json();
       loaded.push('manifest');
-    } catch (err) { console.warn('Archive manifest fallback:', err); }
+    } catch (error) { console.warn('Archive manifest fallback:', error); }
 
     try {
       const response = await fetch(ARCHIVE_FILES.bfo, { cache: 'no-store' });
       if (!response.ok) throw new Error(`BFO ${response.status}`);
       rows = parseCsv(await response.text());
       loaded.push('BFO CSV');
-    } catch (err) { console.warn('Archive BFO fallback:', err); }
+    } catch (error) { console.warn('Archive BFO fallback:', error); }
 
     try {
       const response = await fetch(ARCHIVE_FILES.ring, { cache: 'no-store' });
       if (!response.ok) throw new Error(`ring ${response.status}`);
       geojson = await response.json();
       loaded.push('GeoJSON');
-    } catch (err) { console.warn('Archive ring fallback:', err); }
+    } catch (error) { console.warn('Archive ring fallback:', error); }
 
     const center = manifest.poi_center || fallbackManifest.poi_center;
     const bounds = manifest.credible_region_95 || fallbackManifest.credible_region_95;
@@ -464,106 +407,130 @@
 
     renderArchiveMap(manifest, geojson);
     renderBfoChart(rows);
-    if (mapStatus) mapStatus.textContent = geojson ? 'Preserved GeoJSON loaded from repository. The blue rectangle is the historical reported 95% bounding envelope; the gold polygon is the preserved 20 km ring.' : 'Repository GeoJSON unavailable; displaying a geometric fallback from the archived center/radius.';
+    if (mapStatus) mapStatus.textContent = geojson ? 'Preserved GeoJSON loaded from the repository.' : 'Repository GeoJSON unavailable; a geometric fallback is displayed.';
     if (status) status.textContent = loaded.length === 3 ? 'Repository archive loaded: manifest + BFO CSV + GeoJSON.' : `Archive loaded with fallbacks (${loaded.join(', ') || 'embedded metadata only'}).`;
+  }
+
+  async function loadCurrentState() {
+    let state = currentFallback;
+    try {
+      const response = await fetch(CURRENT_STATE_FILE, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`current state ${response.status}`);
+      state = await response.json();
+    } catch (error) {
+      console.warn('Current-state JSON fallback:', error);
+    }
+    document.documentElement.dataset.checkpoint = state.checkpoint_id || currentFallback.checkpoint_id;
+    const eventLog = document.getElementById('eventLog');
+    if (eventLog) eventLog.innerHTML = `<span>SYS</span> ${state.clean_target && state.clean_target.status ? state.clean_target.status : currentFallback.clean_target.status}; ${state.public_status || currentFallback.public_status}.`;
+  }
+
+  function installTabsAndMenus() {
+    const statusText = document.getElementById('statusText');
+    const eventLog = document.getElementById('eventLog');
+    const systemState = document.getElementById('systemState');
+    const runButton = document.getElementById('runButton');
+    const haltButton = document.getElementById('haltButton');
+    const clock = document.getElementById('clock');
+    const popup = document.getElementById('menuPopup');
+
+    const messages = {
+      map: 'Current conditioned diagnostic map selected. No posterior or endpoint is claimed.',
+      archive: 'Archived baseline selected. Historical POI package loaded separately from the clean target.',
+      satcom: 'Clean SATCOM ownership and terminal message policy selected.',
+      solver: 'Numerical checkpoint and planned S50 architecture selected.',
+      residuals: 'Mathematical contracts and fail-closed gates selected.',
+      drift: 'Ocean-forcing readiness selected. Current trajectory-to-drift coupling is deferred.',
+      log: 'Current public checkpoint log selected.'
+    };
+
+    function log(source, message) {
+      if (eventLog) eventLog.innerHTML = `<span>${source}</span> ${message}`;
+      if (statusText) statusText.textContent = message;
+    }
+
+    function bindTabs() {
+      const tabs = [...document.querySelectorAll('.tab')];
+      const panels = [...document.querySelectorAll('.tab-panel')];
+      tabs.forEach(tab => {
+        if (tab.dataset.bound === 'true') return;
+        tab.dataset.bound = 'true';
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.tab;
+          tabs.forEach(item => item.classList.toggle('active', item === tab));
+          panels.forEach(panel => panel.classList.toggle('active', panel.id === `tab-${target}`));
+          log('VIEW', messages[target] || 'Display changed.');
+        });
+      });
+    }
+
+    bindTabs();
+
+    if (runButton) runButton.addEventListener('click', () => {
+      if (systemState) systemState.textContent = ' PREDICTIVE LOCK';
+      log('GATE', 'Predictive run blocked: the occurrence-mapped aircraft-performance source is not yet qualified.');
+    });
+
+    if (haltButton) haltButton.addEventListener('click', () => {
+      if (systemState) systemState.textContent = ' HOLD';
+      log('MODEL', 'Public interface hold selected. No scientific process is connected to this control.');
+    });
+
+    document.querySelectorAll('[data-map-action]').forEach(button => {
+      button.addEventListener('click', () => {
+        const action = button.dataset.mapAction;
+        setMapLayer(action === 'whole' ? 'wide' : action);
+        log('MAP', action === 'wide' ? 'All current diagnostic layers displayed.' : `${action} layer emphasized.`);
+      });
+    });
+
+    const menuItems = {
+      file: ['Open Current Checkpoint', 'Open Archive Baseline', 'Export Snapshot...', 'Print...'],
+      model: ['Clean SATCOM Target', 'S50 Architecture', 'Aircraft Performance Gate'],
+      observations: ['SATCOM Ownership', 'Terminal Events', 'Provenance Register'],
+      solver: ['Numerical Checkpoint', 'Math / Gates', 'Current Run Log'],
+      drift: ['Forcing Asset', 'Debris-Date Bound', 'Coupling Status'],
+      view: ['Current Map', 'Archive Baseline', 'SATCOM', 'Solver', 'Math / Gates', 'Drift', 'Run Log'],
+      help: ['Current State README', 'Data Sources', 'About MH370 Modeling System']
+    };
+
+    document.querySelectorAll('.menu-button').forEach(button => {
+      button.addEventListener('click', event => {
+        event.stopPropagation();
+        const name = button.dataset.menu;
+        popup.innerHTML = menuItems[name].map(item => `<button type="button">${item}</button>`).join('');
+        popup.style.left = `${button.offsetLeft + 4}px`;
+        popup.hidden = false;
+        [...popup.querySelectorAll('button')].forEach(item => item.addEventListener('click', () => {
+          const text = item.textContent.toLowerCase();
+          const mapping = [
+            ['archive', 'archive'], ['satcom', 'satcom'], ['numerical', 'solver'], ['s50', 'solver'],
+            ['math', 'residuals'], ['gate', 'residuals'], ['drift', 'drift'], ['forcing', 'drift'],
+            ['run log', 'log'], ['current map', 'map'], ['checkpoint', 'map']
+          ];
+          const found = mapping.find(([needle]) => text.includes(needle));
+          if (found) document.querySelector(`[data-tab="${found[1]}"]`)?.click();
+          else log('MENU', `${item.textContent} selected.`);
+          popup.hidden = true;
+        }));
+      });
+    });
+
+    document.addEventListener('click', () => { if (popup) popup.hidden = true; });
+    document.querySelectorAll('select').forEach(control => control.addEventListener('change', () => log('CFG', 'Display profile changed; no scientific state was altered.')));
+
+    function updateClock() {
+      if (!clock) return;
+      clock.textContent = new Date().toLocaleTimeString('en-US', { hour12: false });
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
   }
 
   installArchiveStyles();
   installArchivePanel();
-  improvePublicState();
-  installDevelopmentNotice();
-  installGeographicMap();
+  installCurrentMap();
+  installTabsAndMenus();
+  loadCurrentState();
   loadArchiveData();
-
-  const tabs = [...document.querySelectorAll('.tab')];
-  const panels = [...document.querySelectorAll('.tab-panel')];
-  const statusText = document.getElementById('statusText');
-  const eventLog = document.getElementById('eventLog');
-  const systemState = document.getElementById('systemState');
-  const runButton = document.getElementById('runButton');
-  const haltButton = document.getElementById('haltButton');
-  const clock = document.getElementById('clock');
-  const popup = document.getElementById('menuPopup');
-
-  const messages = {
-    map: 'Development map selected. Archived POI is displayed only as a historical reference.',
-    archive: 'Archived baseline selected. Historical POI and preserved public artifacts loaded.',
-    satcom: 'SATCOM console selected. Archived observed BFO values are visible.',
-    solver: 'Current reconstruction diagnostics selected. Public solver remains offline.',
-    residuals: 'Development residual monitor selected.',
-    drift: 'Drift compatibility panel selected.',
-    log: 'Run log selected.'
-  };
-
-  function log(source, message) {
-    if (eventLog) eventLog.innerHTML = `<span>${source}</span> ${message}`;
-    if (statusText) statusText.textContent = message;
-  }
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      tabs.forEach(t => t.classList.toggle('active', t === tab));
-      panels.forEach(p => p.classList.toggle('active', p.id === `tab-${target}`));
-      log('VIEW', messages[target] || 'Display changed.');
-    });
-  });
-
-  if (runButton) runButton.addEventListener('click', () => {
-    if (systemState) systemState.textContent = ' DEV / OFFLINE';
-    log('MODEL', 'Public run blocked: the current scientific solver is not connected to this front-facing UI. Open Archive Baseline to inspect the preserved historical model package.');
-    const archiveTab = document.querySelector('[data-tab="archive"]');
-    if (archiveTab) setTimeout(() => archiveTab.click(), 450);
-  });
-
-  if (haltButton) haltButton.addEventListener('click', () => {
-    if (systemState) systemState.textContent = ' HOLD';
-    log('MODEL', 'Operator hold selected for the public development interface.');
-  });
-
-  const menuItems = {
-    file: ['Open Archived Baseline', 'Export Snapshot...', 'Print...', 'Exit'],
-    model: ['Archived Baseline', 'Current Reconstruction (Offline)', 'Model Settings...'],
-    observations: ['SATCOM Table', 'Terminal Events', 'Provenance Register'],
-    solver: ['Solver Control', 'Derivative Check', 'Curvature Diagnostics'],
-    drift: ['Drift Gates', 'Debris Register', 'Compatibility View'],
-    view: ['Map View', 'Archive Baseline', 'SATCOM', 'Solver', 'Residuals', 'Run Log'],
-    help: ['Method Notes', 'Data Sources', 'About MH370 Modeling System']
-  };
-
-  document.querySelectorAll('.menu-button').forEach(button => {
-    button.addEventListener('click', e => {
-      e.stopPropagation();
-      const name = button.dataset.menu;
-      popup.innerHTML = menuItems[name].map(item => `<button type="button">${item}</button>`).join('');
-      popup.style.left = `${button.offsetLeft + 4}px`;
-      popup.hidden = false;
-      [...popup.querySelectorAll('button')].forEach(item => item.addEventListener('click', () => {
-        const text = item.textContent;
-        if (/archive/i.test(text)) {
-          document.querySelector('[data-tab="archive"]')?.click();
-        } else if (/satcom/i.test(text)) {
-          document.querySelector('[data-tab="satcom"]')?.click();
-        } else if (/solver control/i.test(text)) {
-          document.querySelector('[data-tab="solver"]')?.click();
-        } else {
-          log('MENU', `${text} selected (development interface).`);
-        }
-        popup.hidden = true;
-      }));
-    });
-  });
-
-  document.addEventListener('click', () => { if (popup) popup.hidden = true; });
-  document.querySelectorAll('input[type="checkbox"], input[type="radio"], select').forEach(control => {
-    control.addEventListener('change', () => log('CFG', 'Operator configuration changed in the development interface.'));
-  });
-
-  function updateClock() {
-    if (!clock) return;
-    const now = new Date();
-    clock.textContent = now.toLocaleTimeString('en-US', { hour12: false });
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
 })();
