@@ -46,7 +46,7 @@
           <option>S50_EVENT_SEQUENTIAL_PLANNED</option>
           <option>PHASE4C_NUMERICAL_ARCHIVE</option>
         </select>
-        <div class="prototype-flag">CURRENT PUBLIC CHECKPOINT · 2026-09-04</div>
+        <div class="prototype-flag">CURRENT PUBLIC CHECKPOINT · 2026-09-07</div>
       </section>
 
       <section class="project-strip sunken">
@@ -57,8 +57,9 @@
       </section>
 
       <section class="group-box overview-box" aria-label="Project overview">
-        <strong>WHAT THIS IS NOW</strong>
-        <p>This is an independent, source-controlled MH370 inference project. The clean SATCOM target and limited-envelope numerical machinery are established, but the full event-sequential S50 posterior has not run. Predictive execution remains locked while the Boeing 777-2H6ER / Trent 892B-17 performance source and runtime qualification are completed. The archived 31.4°S, 90.4°E model remains available in a separate historical tab.</p>
+        <strong>LATEST VALIDATED GATE — G1F_PASS</strong>
+        <p><b>September 6 result:</b> synthetic light-time validation passed <b>68/68 checks across 17 journeys</b>. Four distinct light-time legs are implemented; forward and backward anchors recover the same journey within the declared tolerance. See Math / Gates for the independent checks and frozen-approximation comparison.</p>
+        <p>This is an independent, source-controlled MH370 inference project. The September 4 checkpoint is carried forward below: the clean SATCOM target and limited-envelope numerical machinery are established, but the full event-sequential S50 posterior has not run. Predictive execution remains locked while the Boeing 777-2H6ER / Trent 892B-17 performance source and runtime qualification are completed. The archived 31.4°S, 90.4°E model remains available in a separate historical tab.</p>
       </section>
 
       <div class="main-grid">
@@ -66,6 +67,7 @@
           <fieldset class="group-box">
             <legend>SYSTEM STATUS</legend>
             <div class="switchboard">
+              <div class="switch-row"><span class="lamp green"></span><span>G1F</span><strong>PASS</strong></div>
               <div class="switch-row"><span class="lamp green"></span><span>SATCOM</span><strong>CLEAN</strong></div>
               <div class="switch-row"><span class="lamp green"></span><span>BTO</span><strong>SRC LOCK</strong></div>
               <div class="switch-row"><span class="lamp green"></span><span>BFO</span><strong>EVENT OWN</strong></div>
@@ -76,7 +78,7 @@
           </fieldset>
 
           <fieldset class="group-box">
-            <legend>CURRENT CHECKPOINT</legend>
+            <legend>SEPTEMBER 4 NUMERICS</legend>
             <div class="meter-list">
               <div><span>Clean evaluations</span><output>26,952</output></div>
               <div><span>Frozen modes</span><output>128</output></div>
@@ -153,6 +155,7 @@
 
           <div class="tab-panel" id="tab-solver">
             <div class="panel-caption">NUMERICAL CHECKPOINT AND S50 POSTERIOR ARCHITECTURE</div>
+            <div class="annotation-box"><b>Latest validation: G1F_PASS.</b> 68/68 synthetic light-time checks passed. The numerical search results below are carried forward from September 4; G1F is not a new trajectory search.</div>
             <div class="current-dev-note"><b>LIMITED-ENVELOPE CHECKPOINT.</b> The 16 underlying branches and 80 continuation cases validated important numerical machinery. They are not 80 independent routes and they are not the full S50 posterior search.</div>
             <div class="solver-layout">
               <fieldset class="group-box"><legend>NEXT INFERENCE ENGINE</legend>
@@ -180,6 +183,20 @@
 
           <div class="tab-panel" id="tab-residuals">
             <div class="panel-caption">MATHEMATICAL CONTRACTS / FAIL-CLOSED GATES</div>
+            <div class="annotation-box"><b>G1F_PASS — synthetic light-time and frozen-approximation validation</b><p>Completed September 6, 2026: <b>68/68 checks passed across 17 synthetic journeys</b>. This qualifies the tested light-time implementation, not a real-flight trajectory posterior.</p></div>
+            <div class="data-table-wrap sunken">
+              <table class="data-table">
+                <thead><tr><th>G1F CHECK</th><th>VALIDATED RESULT / SCOPE</th></tr></thead>
+                <tbody>
+                  <tr><td>Four light-time legs</td><td>Four distinct propagation legs implemented.</td></tr>
+                  <tr><td>Anchor consistency</td><td>Forward and backward anchors recovered the same journey within the declared tolerance.</td></tr>
+                  <tr><td>Independent validation</td><td>Analytic controls and independent Decimal-80 roots; 68/68 checks over 17 journeys.</td></tr>
+                  <tr><td>Frozen approximations</td><td>Signed differences use SnapshotMoving − frozen, in µs. Across the finite fixtures, the largest-magnitude signed differences came from the synthetic stress case.</td></tr>
+                  <tr><td>Interpretation</td><td>The stress-case comparison does not establish a real-flight timing correction or an endpoint shift. Aircraft-performance qualification and full S50 inference are separate gates.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="annotation-box"><b>Evidence:</b> completed G1F checkpoint summary, run <code>20260906T195934Z_faee8e08</code>. The underlying GATE_RESULT.json is not included in this public repository; exact per-fixture differences and tolerances are not reproduced here. This website update did not rerun the validation. <a href="current/README.md">Checkpoint notes</a> · <a href="data/current-program-state.json">Structured checkpoint</a></div>
             <div class="math-grid">
               <fieldset class="group-box math-card"><legend>BTO RESIDUAL</legend><div class="formula">r<sub>BTO,k</sub> = BTO<sub>obs,k</sub> − BTO<sub>pred,k</sub></div><p>Observed-minus-predicted sign convention. Observation ownership is event-specific.</p></fieldset>
               <fieldset class="group-box math-card"><legend>FIXED BIAS</legend><div class="formula">b = −8,426,548 / 17<br>= −495,679.29411764705 µs</div><p>Conditioned terminal-specific calibration; not transferable to another terminal.</p></fieldset>
@@ -207,7 +224,7 @@
 
           <div class="tab-panel" id="tab-log">
             <div class="panel-caption">CURRENT PUBLIC CHECKPOINT LOG</div>
-            <div class="terminal tall sunken" id="runLog">CHECKPOINT DATE ...................... 2026-09-04<br>CLEAN POST-ANCHOR TARGET ............. VALID<br>PRE-ANCHOR BTO/BFO OWNERSHIP ......... REPAIRED<br>CLEAN COARSE EVALUATIONS ............. 26,952 FINITE<br>FROZEN CONDITIONED MODE CATALOG ...... 128 MODES<br>PHASE 4C NUMERICAL SHAKEOUT .......... 16 BRANCHES / 80 CASES<br>CONFIRMED STATIONARY SOLUTIONS ....... 0<br>S50 EVENT-SEQUENTIAL POSTERIOR ........ NOT RUN<br>BOEING EXACT SOURCE-ROW LOOKUP ........ PASS / NONPREDICTIVE<br>B777 / TRENT PHYSICAL SOURCE .......... BLOCKED<br>DEPENDENCY ACQUISITION V4 ............. PREPARED / RESULT PENDING<br>OCEAN FORCING ......................... 85 FILES / ≈8.44 GB<br>DRIFT COUPLING ........................ DEFERRED<br>PREDICTIVE EXECUTION .................. LOCKED<br><br>C:\MH370\CURRENT_STATE&gt;<span class="cursor">_</span></div>
+            <div class="terminal tall sunken" id="runLog">CHECKPOINT DATE ...................... 2026-09-07<br>G1F RESULT DATE ...................... 2026-09-06<br>G1F SYNTHETIC LIGHT-TIME .............. PASS / 68 OF 68 CHECKS<br>SYNTHETIC JOURNEYS ................... 17 / FOUR LIGHT-TIME LEGS<br>INDEPENDENT CONTROLS ................. ANALYTIC + DECIMAL-80 ROOTS<br>EARLIER STATE BELOW .................. CARRIED FORWARD FROM 2026-09-04<br>CLEAN POST-ANCHOR TARGET ............. VALID<br>PRE-ANCHOR BTO/BFO OWNERSHIP ......... REPAIRED<br>CLEAN COARSE EVALUATIONS ............. 26,952 FINITE<br>FROZEN CONDITIONED MODE CATALOG ...... 128 MODES<br>PHASE 4C NUMERICAL SHAKEOUT .......... 16 BRANCHES / 80 CASES<br>CONFIRMED STATIONARY SOLUTIONS ....... 0<br>S50 EVENT-SEQUENTIAL POSTERIOR ........ NOT RUN<br>BOEING EXACT SOURCE-ROW LOOKUP ........ PASS / NONPREDICTIVE<br>B777 / TRENT PHYSICAL SOURCE .......... BLOCKED<br>DEPENDENCY ACQUISITION V4 ............. PREPARED / RESULT PENDING<br>OCEAN FORCING ......................... 85 FILES / ≈8.44 GB<br>DRIFT COUPLING ........................ DEFERRED<br>PREDICTIVE EXECUTION .................. LOCKED<br><br>C:\MH370\CURRENT_STATE&gt;<span class="cursor">_</span></div>
           </div>
         </section>
 
@@ -219,7 +236,8 @@
               <div><span>POSTERIOR</span><output>NOT RUN</output></div>
               <div><span>ARC SWEEP</span><output>PENDING</output></div>
               <div><span>PREDICTIVE EXEC</span><output>BLOCKED</output></div>
-              <div><span>ACTIVE SOURCE GATE</span><output>B777 PERF</output></div>
+              <div><span>LATEST VALIDATED GATE</span><output>G1F_PASS</output></div>
+              <div><span>SOURCE GATE (SEP 4)</span><output>B777 PERF</output></div>
             </div>
           </fieldset>
 
@@ -245,6 +263,10 @@
             <legend>OPERATOR NOTES</legend>
             <textarea class="notes" spellcheck="false" readonly>PUBLIC SCIENTIFIC CHECKPOINT
 
+G1F_PASS: 68/68 checks, 17 synthetic journeys.
+Result: September 6, 2026.
+
+Carried forward from September 4:
 Clean SATCOM target: valid.
 Limited numerical machinery: validated.
 Full posterior: not run.
@@ -269,7 +291,7 @@ No current endpoint is claimed.</textarea>
       </section>
 
       <footer class="statusbar">
-        <div class="status-cell flex" id="statusText">Clean target valid; aircraft-performance source gate remains blocked.</div>
+        <div class="status-cell flex" id="statusText">G1F_PASS: 68/68 synthetic checks; predictive execution remains locked.</div>
         <div class="status-cell">MODE: CURRENT CHECKPOINT</div>
         <div class="status-cell">EXEC: NO PREDICTIVE RUN</div>
         <div class="status-cell" id="clock">--:--:--</div>

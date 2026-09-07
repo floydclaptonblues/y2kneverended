@@ -1,9 +1,25 @@
 # MH370 Modeling System — Current Public State
 
-**Checkpoint:** 2026-09-04  
+**Checkpoint:** 2026-09-07
 **Top-level status:** `NO_PREDICTIVE_EXECUTION_AUTHORIZED`
 
 This directory documents the current public state of the active reconstruction. It is separate from `archive/baseline/`, which preserves the historical 31.4°S, 90.4°E model and partial replication pack.
+
+## Latest validated gate — G1F_PASS
+
+**Result date:** September 6, 2026. **Run:** `20260906T195934Z_faee8e08`.
+**Gate:** `G1F_SYNTHETIC_LIGHT_TIME_AND_FROZEN_APPROXIMATION`.
+
+- Four distinct light-time legs were implemented.
+- Forward and backward anchors recovered the same journey within the declared tolerance.
+- Independent validation passed **68/68 checks across 17 synthetic journeys**, including analytic controls and independent Decimal-80 roots.
+- Frozen comparisons use the signed convention **SnapshotMoving − frozen**, measured in microseconds. The largest-magnitude signed differences across the finite fixtures came from the synthetic stress case.
+
+These are synthetic implementation checks. The stress-case differences do not establish a real-flight timing correction or endpoint displacement. G1F does not qualify the aircraft-performance model or establish a trajectory posterior.
+
+Provenance: the completed G1F checkpoint summary supplied in the project conversation. The underlying `GATE_RESULT.json` is not included in this public repository and was not independently inspected for this website update. Exact per-fixture differences and numeric tolerances are therefore not reproduced. No validation or solver run was executed by this website update.
+
+The remaining SATCOM, numerical, performance, catalog and drift records below are carried forward from the September 4 public checkpoint. Their inclusion does not claim a new execution or requalification under G1F.
 
 ## What is established
 

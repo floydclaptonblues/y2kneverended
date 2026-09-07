@@ -10,6 +10,8 @@ The interface retains its Windows 98-era engineering-workstation design, but its
 
 ## Current state
 
+Public checkpoint updated September 7, 2026: **G1F_PASS**, completed September 6, with **68/68 synthetic light-time checks across 17 journeys**. The main page includes the summary and Math / Gates details. Earlier numerical and aircraft-performance records are explicitly carried forward from September 4. G1F does not establish a trajectory posterior or clear the performance gate.
+
 Top-level public status:
 
 `NO_PREDICTIVE_EXECUTION_AUTHORIZED`

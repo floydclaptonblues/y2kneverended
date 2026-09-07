@@ -24,9 +24,10 @@
   ];
 
   const currentFallback = {
-    checkpoint_id: 'MH370_PUBLIC_CURRENT_STATE_2026-09-04_V1',
+    checkpoint_id: 'MH370_PUBLIC_CURRENT_STATE_2026-09-07_G1F',
     public_status: 'NO_PREDICTIVE_EXECUTION_AUTHORIZED',
-    updated_utc: '2026-09-04',
+    updated_utc: '2026-09-07',
+    latest_validation_gate: { status: 'G1F_PASS', checks_passed: 68, checks_total: 68, synthetic_journeys: 17 },
     clean_target: {
       id: 'SATCOM_POST_ANCHOR_TARGET_V1',
       status: 'CLEAN_TARGET_SCIENTIFICALLY_VALID',
@@ -422,7 +423,7 @@
     }
     document.documentElement.dataset.checkpoint = state.checkpoint_id || currentFallback.checkpoint_id;
     const eventLog = document.getElementById('eventLog');
-    if (eventLog) eventLog.innerHTML = `<span>SYS</span> ${state.clean_target && state.clean_target.status ? state.clean_target.status : currentFallback.clean_target.status}; ${state.public_status || currentFallback.public_status}.`;
+    if (eventLog) eventLog.innerHTML = `<span>SYS</span> ${(state.latest_validation_gate || currentFallback.latest_validation_gate).status} / 68 of 68 synthetic checks; ${state.clean_target && state.clean_target.status ? state.clean_target.status : currentFallback.clean_target.status}; ${state.public_status || currentFallback.public_status}.`;
   }
 
   function installTabsAndMenus() {
