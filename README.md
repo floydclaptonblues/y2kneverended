@@ -39,3 +39,10 @@ The original 31.4°S, 90.4°E model remains under `archive/baseline/` and is dis
 - `CNAME` — custom domain target
 
 No framework or build step is required.
+
+
+## Independent daily-ocean transport study (October 2026)
+
+A separate, completed circulation survey used 481 hypothetical releases and 365 days of daily GLORYS12V1 currents with fixed 1.2% monthly-NCEP effective wind slip. Both 6-hour and 3-hour integrations were completed. The full illustrated report is [Daily Indian Ocean Transport Results](drift-results.html), with public supporting reports and concise CSV tables under [research/daily-glorys-2014/](research/daily-glorys-2014/summary.json).
+
+This is **not** the aircraft-trajectory posterior described in the September public checkpoint and does not establish an MH370 crash location. The existing flight-inference status remains separate and unchanged.

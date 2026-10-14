@@ -1,0 +1,56 @@
+{
+  "title": "One year of Indian Ocean surface transport, 2014-03-08 to 2015-03-07",
+  "source_repository": "floydclaptonblues/MH370-Ocean-GLORYS-Data",
+  "source_commit": "7d29f63 (initial), later closure as available in main 2026-10-14",
+  "input": {
+    "daily_surface_currents": "GLORYS12V1 uo,vo ~0.494m, 1/12°; 45-119.9167 E, 50S-equator",
+    "monthly_winds": "Atlas NCEP 10m",
+    "effective_wind_slip": 0.012,
+    "added_stokes": false
+  },
+  "simulation": {
+    "particles": 481,
+    "start_utc": "2014-03-08",
+    "last_day_utc": "2015-03-07",
+    "steps_hours": [
+      6,
+      3
+    ],
+    "not_a_crash_location_model": true
+  },
+  "results": {
+    "6h": {
+      "80E_west": 13,
+      "70E_west": 4,
+      "60E_west": 2,
+      "50E_west": 1,
+      "100E_east": 451,
+      "cartwheel_band_south_then_west": 57,
+      "cartwheel_band_count": 240,
+      "still_active": 246,
+      "domain_exit": 91,
+      "masked_exit": 144
+    },
+    "3h": {
+      "80E_west": 11,
+      "70E_west": 5,
+      "60E_west": 3,
+      "50E_west": 2,
+      "100E_east": 452,
+      "cartwheel_band_south_then_west": 68,
+      "cartwheel_band_count": 240,
+      "still_active": 259,
+      "domain_exit": 105,
+      "masked_exit": 117
+    }
+  },
+  "caveats": [
+    "Single historical reanalysis and one start date",
+    "Winds are monthly averages",
+    "Only one step-size refinement; numerical convergence not proved",
+    "Individual endpoints diverge strongly (~846 km median 3h versus 6h among jointly active objects)",
+    "Eastern censoring and unclassified masked cells",
+    "Not 508-day beaching or detection model",
+    "No MH370 crash location or posterior"
+  ]
+}
